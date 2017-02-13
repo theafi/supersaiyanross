@@ -16,7 +16,7 @@
 			$conexion = conectarBD();
 			$email = mysqli_real_escape_string($conexion, $_POST['email']);
 			$clave = $_POST['clave1'];
-			$buscaremail = "SELECT IDUsuario, Nombre, Clave, bloqueado, nErrores, tipoUsuario FROM Usuarios WHERE Email = '$email';";
+			$buscaremail = "SELECT IDUsuario, Nombre, Clave, bloqueado, nErrores, tipoUsuario FROM usuarios WHERE Email = '$email';";
 			$consultamail = mysqli_query($conexion, $buscaremail);
 			$filas = mysqli_fetch_array($consultamail);
 			$resultadoid = print_r($filas[0], true);
@@ -35,7 +35,7 @@
 				$_SESSION['error'] = "El correo no está registrado.";
 				header('Location: login.php');
 			} elseif (password_verify($clave, $resultadoclave) == FALSE ) {
-				$actualizarerror = "UPDATE Usuarios SET nErrores = nErrores + 1 WHERE IDUsuario = '$resultadoid';";
+				$actualizarerror = "UPDATE usuarios SET nErrores = nErrores + 1 WHERE IDUsuario = '$resultadoid';";
 				mysqli_query($conexion, $actualizarerror);
 				$_SESSION['error'] = "La contraseña introducida es incorrecta.";
 				header('Location: login.php');
@@ -96,7 +96,7 @@
 				$_SESSION['email'] = $email;
 				$_SESSION['fecha'] = date("Y-m-d H:i:s");
 				$_SESSION['tipoUsuario'] = $tipousuario;
-				$actualizarusuario = "UPDATE Usuarios SET nEntradas = nEntradas + 1, ultimaVisita = '$fecha' WHERE IDUsuario = '$resultadoid';";
+				$actualizarusuario = "UPDATE usuarios SET nEntradas = nEntradas + 1, ultimaVisita = '$fecha' WHERE IDUsuario = '$resultadoid';";
 				mysqli_query($conexion, $actualizarusuario);
 				//$_SESSION['cuentaBloqueo'] = 4;
 				if($tipousuario == 'Administrador') {

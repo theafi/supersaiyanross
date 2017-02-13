@@ -8,27 +8,43 @@
 <html>
 	<head>
 		<meta charset="UTF-8">
+		<link rel="stylesheet" href="css/bootstrap.min.css">
 		<title>Iniciar sesión</title>
 		<style>
 			#error {
 				color: red;	
 			}
+			.login {
+				position: absolute;
+				top: 50%;
+				left: 50%;
+				margin-right: -50%;
+				transform: translate(-50%, -50%)
+			}
 		</style>
 		
 	</head>
 	<body>
-		<form action="validarLogin.php" autocomplete="on" method="post" >
-			Correo electrónico: <br> 
-			<input type="email" name="email" required> <br>
-			Contraseña: <br>
-			<input type="password" name="clave1" id="clave1" minlength="5" maxlength="10" required> <br>
-			<input type="submit" name="Iniciar sesión"> <a href="recuperar.html">Olvidé mi contraseña</a>
+		<div class="login">
+			<div class="form-group">
+				<form action="validarLogin.php" autocomplete="on" method="post" enctype="multipart/form-data">
+					<input type="email" name="email" placeholder="Correo electrónico" required>
+			</div>
+			<div class="form-group">
+					<input type="password" name="clave1" id="clave1" minlength="5" maxlength="10" placeholder="Contraseña" required> <br>
+			</div>
+			<div class="form-group">
+					<input type="checkbox" name="recuerdame"> Recuérdame
+			</div>
+			<button type="submit">Iniciar sesión</button> <a href="recuperar.html"><small>Olvidé mi contraseña</small></a>
 			</form> 
+		
 			<div id="error"><?php 
 					if(!empty($_SESSION['error'])) {
 							echo $_SESSION['error'];
 							$_SESSION['error'] = "";
 							}
 				?></div>
+		</div>
 	</body>
 </html>

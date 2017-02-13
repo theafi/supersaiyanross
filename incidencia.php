@@ -5,8 +5,8 @@
 			header('Location: login.php');
 	}
 	include 'funcion.php';
-	$id = $_GET['ID'];
 	$conexion = conectarBD();
+	$id = mysqli_real_escape_string($conexion, $_GET['ID']);
 	$buscarIncidencia = "SELECT * FROM incidencias WHERE idincidencias = $id;";
 	$incidencia = mysqli_fetch_array(mysqli_query($conexion, $buscarIncidencia));
 	
@@ -60,10 +60,11 @@
 				background-color: 	#D3D3D3;
 			}
 			.modificaciones {
-				position: relative;
-				left: 610px;
-				top: 750px;
-				width: 50%;
+				position: absolute;
+				top: 110%;
+				left: 50%;
+				margin-right: -50%;
+				transform: translate(-50%, -50%);
 			}
 			.modificaciones table {
 				max-width: 700px;

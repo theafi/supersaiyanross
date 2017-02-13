@@ -13,6 +13,7 @@
 	<head>
 		<meta name="viewport" content="width=device-width, initial-scale=1.0">
 		<title>Lista de usuarios</title>
+		<link rel="stylesheet" href="css/bootstrap.min.css">
 		<style>
 		
 			<!-- Ancho máximo de la página antes de adaptarse la tabla a dispositivos móviles.-->
@@ -88,7 +89,7 @@
 			<!-- iPads (portrait and landscape) ----------- -->
 			@media only screen and (min-device-width: 768px) and (max-device-width: 1024px) {
 				body {
-					width: 495px;
+					width: 450px;
 				} 
 				.tabla {
 					position: relative;
@@ -112,6 +113,7 @@
 					overflow: hidden; 
 					text-overflow: ellipsis; 
 					word-wrap: break-word;
+					width: 85%;
 				}
 				.impar{
 					background-color:silver;
@@ -171,6 +173,12 @@
 					text-overflow: ellipsis; 
 					word-wrap: break-word;
 				} 
+				table {
+					border-collapse:separate;
+					border:solid grey 1px;
+					border-radius:6px;
+					-moz-border-radius:6px;
+				}
 
 
 	</style>
@@ -178,8 +186,8 @@
 	</head>
 	<body>
 		<div class="topright"><a href="logout.php">Cerrar sesión</a></div>
-		<div class="tabla">
-			<table>
+		<div class="usuarios">
+			<table clas="table table-striped">
 				<thead>
 					<tr bgcolor="#DDDDDD"><th>CÓDIGO DE USUARIO</th><th>NOMBRE</th><th>APELLIDO</th><th>EMAIL</th><th>CIUDAD</th><th>PAIS</th><th>TIPO DE USUARIO</th><th>FECHA DE ALTA</th><th>Nº DE ENTRADAS AL SISTEMA</th><th>Nº DE INICIOS DE SESIÓN ERRÓNEOS</th><th>ÚLTIMO INICIO DE SESIÓN</th><th>OPERACIONES</th></tr>
 				</thead>

@@ -17,12 +17,12 @@
 		//Parámetros de conexión a la BD
 			include 'funcion.php';
 			$conexion = conectarBD();
-			$id = $_GET['ID'];
+			$id = mysqli_real_escape_string($conexion, $_GET['ID']);
 			if ($_SESSION['id'] == $id) {
 				$_SESSION['error'] = "ERROR: No puedes borrarte a ti mismo.";
 				header('Refresh: 0; URL=listarUsuarios.php');
 			} else{
-				$borrarusuario = "DELETE FROM Usuarios WHERE IDUsuario = '$id';";
+				$borrarusuario = "DELETE FROM usuarios WHERE idusuario = '$id';";
 				mysqli_query($conexion, $borrarusuario);
 				$_SESSION['error'] = "El usuario se ha eliminado correctamente";
 				header('Refresh: 0; URL=listarUsuarios.php');

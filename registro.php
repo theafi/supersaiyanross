@@ -5,7 +5,6 @@
 	session_start();
 	if (($_SESSION['tipoUsuario']) == 'Usuario' ) {
 		header('Location:index.php');
-		
 	}
 
 ?>
@@ -24,8 +23,7 @@
 	<body>
 	<script type="text/javascript" >
 
-	function checkPass(f)
-{
+	function checkPass(f) {
 	
     //Store the password field objects into variables ...
     var pass1 = f.elements["clave1"];
@@ -98,9 +96,6 @@
 	mysqli_query($conexion, $creardb);
 	$usardb = "use rmi;";
 	mysqli_query($conexion, $usardb); 
-	
-		
-		
 	?>
 		<form onSubmit="return checkPass(this) && checkCountry(this.elements['pais']);" action="registro1.php" autocomplete="on" method="post" >
 			Nombre: <br>
@@ -128,16 +123,15 @@
 			Vuelve a introducir la contraseña: <br>
 			<input type="password" name="clave2" id="clave2" minlength="5" maxlength="10" required> <br>
 			<input type="submit" name="Registrar"> <br>
-			</form> 
-			<div id="error"><?php
-				if (!empty($_SESSION['error'])) {
-					echo $_SESSION['error'];
-					$_SESSION['error'] = "";
-				} else{
-					$_SESSION['error'] = "";
-				}
+        </form> 
+        <div id="error"><?php
+            if (!empty($_SESSION['error'])) {
+                echo $_SESSION['error'];
+                $_SESSION['error'] = "";
+            } else{
+                $_SESSION['error'] = "";
+            }
 			?></div>
-			</body>
-			
-			</html>
+    </body>
+</html>
 

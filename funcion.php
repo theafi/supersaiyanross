@@ -3,8 +3,8 @@
 function conectarBD() {
 
 	$dbhost = "localhost"; //Los nombres de las variables son case-sensitive, no así las palabras reservadas
-	$dbusuario = "root";
-	$dbpassword = "Culete_69";
+	$dbusuario = "proyecto";
+	$dbpassword = "ncOzf$7~,IQX`jU1Dr'OQaYZm2K@+W4w";
 	$port = "3306";
 	$conexion = mysqli_connect($dbhost . ":" . $port, $dbusuario, $dbpassword);
 	if (!$conexion) die('Could not connect: ' . mysql_error($conexion));
@@ -22,10 +22,9 @@ function subirImagen($i) {
 			if($_FILES['imagen']['error'][$i] > 0){
 				die('Ha habido un error al subir la imagen.');
 			} elseif($tipo[0] != "image"){
-				echo $_FILES['imagen'][$i]['type'];
 				die('Tipo de archivo no soportado o el archivo no es una imagen.');
 			} elseif($_FILES['imagen']['size'][$i] > 1000000){
-					die('El archivo excede el límite de tamaño.');
+				die('El archivo excede el límite de tamaño.');
 			} elseif(!getimagesize($_FILES['imagen']['tmp_name'][$i])){
 					die('Asegúrese de que está subiendo una imagen');
 			} else{
