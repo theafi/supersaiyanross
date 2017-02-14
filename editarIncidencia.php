@@ -78,12 +78,14 @@
 				top: 50%;
 				left: 50%;
 				margin-right: -50%;
+				height: 100%;
 				transform: translate(-50%, -50%)
 				
 			}
 			.incidencia form{
 				position: relative;
 				width: 100%;
+				
 			}
 			.form-group textarea{
 				position: relative;
@@ -97,7 +99,7 @@
 				<div class="form-group">
 				<input type="hidden" name="idusuario" required value="<?php echo $_SESSION['id']; ?>" >
 				<input type="hidden" name="idincidencia" required value="<?php echo $datosIncidencia['idincidencias']; ?>" >
-				<input type="text" name="asunto" class="form-control" placeholder="Escriba una descripción breve del problema" value="<?php echo $datosIncidencia['nombre']; ?>" required maxLength="80"><br>
+				<input type="text" name="asunto" class="form-control" placeholder="Escriba una descripción breve del problema" value="<?php echo $datosIncidencia['nombre']; ?>" required <?php if ($_SESSION['tipoUsuario'] === 'Usuario') { echo "readonly";} ?> maxLength="80"><br>
 				<textarea name="descripcion"  class="form-control" rows="10" maxLength="600" placeholder="Escriba una descripción más detallada del problema si lo ve necesario (máx. 600 caracteres)"><?php echo $datosIncidencia['descripcion'] ?></textarea>
 				</div>
 				<!-- ya lo implementaré cuando tenga tiempo
@@ -150,10 +152,10 @@
 					}
 				?>
 				<div class="form-group">
-					<textarea name="motivo"  class="form-control" rows="10" maxLength="600" placeholder="¿Por qué edita esta incidencia?" required></textarea>
+					<textarea name="motivo" class="form-control" rows="10" maxLength="600" placeholder="¿Por qué edita esta incidencia?" required></textarea>
 					<small>Este campo es obligatorio.</small>
 				</div>
-				<div type="submit">
+				<div class="submit">
 					<input name="submit" type="submit" class="btn btn-default">
 				</div>
 			</form>

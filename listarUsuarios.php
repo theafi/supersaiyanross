@@ -194,7 +194,7 @@
 				<tbody>
 					<?php
 
-					$sql = "select * from Usuarios;";
+					$sql = "select * from usuarios;";
 					$result  =  mysqli_query($conexion,  $sql)  or  die("ERROR:  " .mysqli_error($conexion));;
 					$hola=0;
 					while ($row = mysqli_fetch_assoc($result)) {
@@ -252,4 +252,3 @@
 		</div>
 			 <br> <a href="registro.php">Agregar usuario</a>
 	</body>
-</html>

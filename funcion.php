@@ -4,7 +4,7 @@ function conectarBD() {
 
 	$dbhost = "localhost"; //Los nombres de las variables son case-sensitive, no así las palabras reservadas
 	$dbusuario = "proyecto";
-	$dbpassword = "ncOzf$7~,IQX`jU1Dr'OQaYZm2K@+W4w";
+	$dbpassword = "Culete_68";
 	$port = "3306";
 	$conexion = mysqli_connect($dbhost . ":" . $port, $dbusuario, $dbpassword);
 	if (!$conexion) die('Could not connect: ' . mysql_error($conexion));
@@ -31,7 +31,7 @@ function subirImagen($i) {
 				$imagen[$i] = $_FILES['imagen']['name'][$i];
 				$ruta[$i] = $_FILES['imagen']['tmp_name'][$i];
 				if(isset($imagen[$i]) && !empty($imagen[$i])) {
-					$localizacion = "C:\\Apache24\\htdocs\\proyecto\\imagenes\\".date("Y-m-d-H-i-s")."-".$imagen[$i];
+					$localizacion = 'imagenes/'.date("Y-m-d-H-i-s")."-".$imagen[$i];
 					if(!file_exists($localizacion)) {
 						move_uploaded_file($ruta[$i], $localizacion);
 					} else {
@@ -46,7 +46,7 @@ function subirImagen($i) {
 	} return $imagen[$i];
 }
 
-function comprobarArray($array){
+function comprobarArray($array){ //Créditos a Henry
 		function bucle($array, $prof=0){
 				
 			echo "<ul style='padding:10px; padding-left:30px; margin:10px; border-radius:5px;

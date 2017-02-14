@@ -31,6 +31,7 @@
 
 		<ul>
 			<li><a href="listarUsuarios.php">Gestión de usuarios</a></li>
+			<li><a href="copiaSeguridad.php">Realizar una copia de seguridad de la base de datos</a></li>
 			<li>Más</li>
 		</ul>
 	</body>

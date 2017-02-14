@@ -28,23 +28,23 @@
 		<div class="login">
 			<div class="form-group">
 				<form action="validarLogin.php" autocomplete="on" method="post" enctype="multipart/form-data">
-					<input type="email" name="email" placeholder="Correo electrónico" required>
+					<input type="email" class="form-control" name="email" placeholder="Correo electrónico" required>
 			</div>
 			<div class="form-group">
-					<input type="password" name="clave1" id="clave1" minlength="5" maxlength="10" placeholder="Contraseña" required> <br>
+					<input type="password" class="form-control" name="clave1" id="clave1" minlength="5" maxlength="10" placeholder="Contraseña" required> <br>
 			</div>
 			<div class="form-group">
 					<input type="checkbox" name="recuerdame"> Recuérdame
 			</div>
 			<button type="submit">Iniciar sesión</button> <a href="recuperar.html"><small>Olvidé mi contraseña</small></a>
 			</form> 
-		
 			<div id="error"><?php 
-					if(!empty($_SESSION['error'])) {
-							echo $_SESSION['error'];
-							$_SESSION['error'] = "";
-							}
-				?></div>
+                                if(!empty($_SESSION['error'])) {
+                                    echo $_SESSION['error'];
+                                    $_SESSION['error'] = "";
+                                }
+                            ?>
+            </div>
 		</div>
 	</body>
 </html>

@@ -3,12 +3,13 @@
 	session_start();
 		if((!isset($_SESSION['id'])) && (empty($_SESSION['id']))) { 
 		header('Location: login.php');
-	} elseif ($_SESSION['tipoUsuario'] == 'usuario' ) {
+	} elseif ($_SESSION['tipoUsuario'] === 'usuario' ) {
 		header('Location: index.php');
 	}
 ?>
 <html>
 	<head>
+        <link rel="stylesheet" href="css/bootstrap.min.css">
 		<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 		<title>Editar usuario</title>
 		<style>
@@ -19,7 +20,18 @@
 				right: 16px;
 				font-size: 18px;
 			}
-
+			.editar {
+				position: absolute;
+				top: 50%;
+				left: 50%;
+				margin-right: -50%;
+				transform: translate(-50%, -50%)
+				
+			}
+			.editar form{
+				position: relative;
+				width: 100%;
+			}
 		</style>
 		<script type="text/javascript" >
 
@@ -89,28 +101,22 @@
 	<body>
 	<div class="topright"><a href="logout.php">Cerrar sesión</a></div>
 	<?php 
-		//include ('funcion.php')
-		$id = $_GET['ID'];
-		$dbhost = "localhost"; //Los nombres de las variables son case-sensitive, no así las palabras reservadas
-		$dbusuario = "root";
-		$dbpassword = "Culete_69";
-		$port = "3306";
-		$conexion = mysqli_connect($dbhost . ":" . $port, $dbusuario, $dbpassword);
-		$usardb = "use rmi;";
-		mysqli_query($conexion, $usardb); 
-		$usuario = "SELECT * from Usuarios WHERE IDUsuario=$id;";
+		include ('funcion.php');
+		$conexion = conectarBD();
+		$id = mysqli_real_escape_string($conexion, $_GET['ID']);
+		$usuario = "SELECT * from usuarios WHERE IDUsuario=$id;";
 		$usuariosql = mysqli_query($conexion, $usuario);
 		$row = mysqli_fetch_array($usuariosql);	
-		echo "<form onSubmit=\"return checkPass(this) && checkCountry(this.elements['pais']);\" action=\"editar.php\" autocomplete=\"on\" method=\"post\" >".
+		echo "<div class=\"editar\">".
+		
+            "<form onSubmit=\"return checkPass(this) && checkCountry(this.elements['pais']);\" action=\"editar.php\" autocomplete=\"on\" method=\"post\" >".
+                "<div class=\"form-group\">".
 				"<input type=\"hidden\" name=\"id\" value=\"". $row['IDUsuario']. "\">".
-				"Nombre: <br>".
-				"<input type=\"text\" name=\"nombre\" maxlength=\"30\" required value=\"". $row['Nombre']. "\"> <br>".
-				"Apellidos: <br>".
-				"<input type=\"text\" name=\"apellidos\" maxlength=\"50\" value=\"". $row['Apellidos']. "\"> <br>".
-				"Correo electrónico: <br>".
-				"<input type=\"email\" name=\"email\" required readonly disabled value=\"". $row['Email']. "\"> <br>".
-				"País: <br>".
-				"<select onchange=\"checkCountry(this)\" name=\"pais\" value=\"". $row['Pais']. "\">".
+				"<input type=\"text\" class=\"form-control\" name=\"nombre\" maxlength=\"30\" placeholder=\"Nombre\"required value=\"". $row['Nombre']. "\"> <br>".
+				"<input type=\"text\" class=\"form-control\" name=\"apellidos\" maxlength=\"50\" placeholder=\"Apellidos\"value=\"". $row['Apellidos']. "\"> <br>".
+				"<input type=\"email\" class=\"form-control\" name=\"email\" placeholder=\"Correo electrónico\" required readonly disabled value=\"". $row['Email']. "\"> <br>".
+				"<strong>País:</strong> <br>".
+				"<select class=\"form-control\" onchange=\"checkCountry(this)\" name=\"pais\" value=\"". $row['Pais']. "\">".
 					"<option value=\"0\">Elige un país</option>";
 						$query = "select ID, Name from rmi.pais ORDER BY Name;";
 						$resultado = mysqli_query($conexion, $query);
@@ -119,11 +125,9 @@
 							
 						}
 				echo "</select> <br>".
-				"Ciudad: <br>".
-				"<input type=\"text\" name=\"ciudad\" required value=\"". $row['Ciudad']. "\"> <br>".
-				"Contraseña: <br>".
-				"<input type=\"password\" name=\"clave1\" id=\"clave1\" minlength=\"5\" maxlength=\"10\" required readonly disabled> <br>".
-				"<input type=\"submit\" name=\"Editar\"> <br>".
+				"<input type=\"text\" class=\"form-control\" name=\"ciudad\" required placeholder=\"Ciudad\" value=\"". $row['Ciudad']. "\"> <br>".
+				"<input type=\"password\" class=\"form-control\" name=\"clave1\" id=\"clave1\" minlength=\"5\" maxlength=\"10\" placeholder=\"Contraseña\" required readonly disabled> <br>".
+				"<button type=\"submit\" class=\"btn btn-default\">Editar</button> <br>".
 				"</form>". 
 				"<div id=\"error\">";
 					if ($_SESSION['error'] == "El email ya está registrado por un usuario. Si no recuerda su contraseña, por favor <a href=\"recuperar.html\">pulse aquí.</a>") {

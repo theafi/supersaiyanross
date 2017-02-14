@@ -1,4 +1,5 @@
 <?php 
+<?php 
 	session_start();
 	if((isset($_SESSION['id'])) && (!empty($_SESSION['id']))) { 
 		header('Location: index.php');
@@ -31,10 +32,10 @@
 				$_SESSION['bloqueoPorContador'] = 0;
 			}
 			$numfilas = mysqli_num_rows($consultamail);
-			if ($numfilas == 0 OR NULL) {
+			if ($numfilas === 0 OR NULL) {
 				$_SESSION['error'] = "El correo no está registrado.";
 				header('Location: login.php');
-			} elseif (password_verify($clave, $resultadoclave) == FALSE ) {
+			} elseif (password_verify($clave, $resultadoclave) === FALSE ) {
 				$actualizarerror = "UPDATE usuarios SET nErrores = nErrores + 1 WHERE IDUsuario = '$resultadoid';";
 				mysqli_query($conexion, $actualizarerror);
 				$_SESSION['error'] = "La contraseña introducida es incorrecta.";
@@ -99,7 +100,7 @@
 				$actualizarusuario = "UPDATE usuarios SET nEntradas = nEntradas + 1, ultimaVisita = '$fecha' WHERE IDUsuario = '$resultadoid';";
 				mysqli_query($conexion, $actualizarusuario);
 				//$_SESSION['cuentaBloqueo'] = 4;
-				if($tipousuario == 'Administrador') {
+				if($tipousuario === 'Administrador') {
 					header('Location: backend.php');
 				} else{
 				header('Location: index.php');

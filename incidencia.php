@@ -1,9 +1,9 @@
 <!DOCTYPE html>
 <?php
 	session_start();
-	if((!isset($_SESSION['id'])) && (empty($_SESSION['id']))) { 
+/*	if((!isset($_SESSION['id'])) && (empty($_SESSION['id']))) { 
 			header('Location: login.php');
-	}
+	} */
 	include 'funcion.php';
 	$conexion = conectarBD();
 	$id = mysqli_real_escape_string($conexion, $_GET['ID']);
@@ -94,12 +94,12 @@
 						<td align="center"><?php echo $incidencia['fechaExpedicion']; ?></td>
 						<td align="center" colspan=""><?php echo $incidencia['fechaModificacion']; ?> </td>
 						<?php
-							if(($_SESSION['tipoUsuario'] == 'Administrador') || ($_SESSION['id'] == $incidencia['subidaPor'])) {
+							if(isset($_SESSION['id']) && (($_SESSION['tipoUsuario'] === 'Administrador') || ($_SESSION['id'] === $incidencia['subidaPor']))) {
 								echo "<td align=\"center\"><a title=\"Editar incidencia\" alt=\"Editar incidencia\" href=\"editarIncidencia.php?ID={$incidencia['idincidencias']}\"><img src=\"y.png\" height=\"15\"></a>".
 								"&nbsp;".
-								"<a title=\"Eliminar incidencia\" alt=\"Editar incidencia\" onclick=\"return confirm('¿Desea eliminar la incidencia?')\" href=\"borrarIncidencia.php?ID={$incidencia['idincidencias']}\"><img src=\"x.png\" height=\"20\"></a></td>";
+								"<a title=\"Eliminar incidencia\" alt=\"Eliminar incidencia\" onclick=\"return confirm('¿Desea eliminar la incidencia?')\" href=\"borrarIncidencia.php?ID={$incidencia['idincidencias']}\"><img src=\"x.png\" height=\"20\"></a></td>";
 							} else{
-								echo "<td></td>";
+								echo "<td align=\"center\"><a title=\"Reportar incidencia\" alt=\"Reportar incidencia\" href=\"reportarIncidencia.php?ID={$incidencia['idincidencias']}\"><img src=\"flag.png\" height=\"20\"></a></td>";
 							}
 						
 						?>

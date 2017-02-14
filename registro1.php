@@ -1,7 +1,6 @@
 <?php
 		session_start();
 		if (isset($_SESSION['tipoUsuario']) && ($_SESSION['tipoUsuario'] == 'Usuario') ) {
-			die();
 			header('Location:index.php');
 	}
 		//Parámetros de conexión a la BD
