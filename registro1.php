@@ -6,7 +6,7 @@
 		//Parámetros de conexión a la BD
 		include 'funcion.php';
 		$conexion = conectarBD();
-		$creartabla = "CREATE TABLE IF EXISTS `usuarios` (
+		$creartabla = "CREATE TABLE IF NOT EXISTS `usuarios` (
 							  `IDUsuario` int(11) NOT NULL AUTO_INCREMENT,
 							  `Nombre` char(30) NOT NULL,
 							  `Apellidos` char(80) DEFAULT NULL,
