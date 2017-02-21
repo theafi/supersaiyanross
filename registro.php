@@ -125,10 +125,13 @@
                     <input type="password" class="form-control" name="clave1" id="clave1" minlength="5" maxlength="10" placeholder="Contraseña" required> <br>
                     <input type="password" class="form-control" name="clave2" id="clave2" minlength="5" maxlength="10" placeholder="Vuelva a introducir la contraseña" required> <br>
                 </div>
-                <div id="error"><?php
+                <?php
                     if (!empty($_SESSION['error'])) {
-                        echo $_SESSION['error'];
-                        $_SESSION['error'] = "";
+                            echo "<div class=\"alert alert-warning\" role=\"alert\" id=\"error\">".
+                                $_SESSION['error'];
+                                
+                                $_SESSION['error'] = "";
+                                echo "</div>";
                     } else{
                         $_SESSION['error'] = "";
                     }

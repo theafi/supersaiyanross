@@ -6,8 +6,12 @@
 	$idincidencia = mysqli_real_escape_string($conexion, $_GET['ID']);
 	$consultaIncidencia = "SELECT * FROM rmi.incidencias WHERE idincidencias = $idincidencia";
 	$datosIncidencia = mysqli_fetch_array(mysqli_query($conexion, $consultaIncidencia));
-	if(((!isset($_SESSION['id'])) && (empty($_SESSION['id']))) || ($_SESSION['id'] === $datosIncidencia['subidaPor']))  {
-		$_SESSION['ultimaPaginaVisitada'] = $_SERVER['SCRIPT_FILENAME'];
+	if((!isset($_SESSION['id'])) && (empty($_SESSION['id']))) {
+        $_SESSION['ultimaPaginaVisitada'] = ($_SERVER['SCRIPT_FILENAME']);
+        header('Location: login.php');
+
+	} 
+	if ($_SESSION['id'] === $datosIncidencia['subidaPor'])  {
 		header('Location: index.php');
 	 }
 ?>

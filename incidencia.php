@@ -120,7 +120,7 @@
                             <td colspan="2"><?php 
                                 $consultaUsuario = "SELECT email FROM usuarios WHERE IDUsuario = {$incidencia['subidaPor']};";
                                 $resultUsuario = mysqli_fetch_array(mysqli_query($conexion, $consultaUsuario));
-                                echo $resultUsuario['email']; 
+                                echo htmlspecialchars($resultUsuario['email']); 
                                 ?>
                             </td>
                             <th>Asignado a</th>
@@ -129,7 +129,7 @@
                                 } else{
                                 $consultaUsuario = "SELECT email FROM usuarios WHERE IDUsuario = {$incidencia['asignadaA']};";
                                 $resultUsuario = mysqli_fetch_array(mysqli_query($conexion, $consultaUsuario));
-                                echo $resultUsuario['email'];
+                                echo htmlspecialchars($resultUsuario['email']);
                                 }
                                 ?></td>
                             
@@ -147,11 +147,11 @@
                         </tr>
                         <tr class="asunto">
                             <th>Resumen</th>
-                            <td colspan="4"><?php echo $incidencia['nombre']; ?></td>
+                            <td colspan="4"><?php echo htmlspecialchars($incidencia['nombre']); ?></td>
                         </tr>
                         <tr class="descripcion">
                             <th>Descripción</th>
-                            <td colspan="4" ><?php echo $incidencia['descripcion']; ?></td>
+                            <td colspan="4" ><?php echo htmlspecialchars($incidencia['descripcion']); ?></td>
                         </tr>
                         <tr class="espaciador">
                             <td colspan="5" rowspan=""></td>

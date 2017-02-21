@@ -36,7 +36,8 @@
 			<div class="form-group">
 					<input type="checkbox" name="recuerdame"> Recuérdame
 			</div>
-			<button type="submit">Iniciar sesión</button> <a href="recuperar.html"><small>Olvidé mi contraseña</small></a>
+			<button type="submit">Iniciar sesión</button> <a href="recuperar.html"><small>Olvidé mi contraseña</small></a><br>
+			<small>¿No tiene cuenta? <a href="registro.php">Registre una cuenta</a></small>
 			</form> 
 			<div id="error"><?php 
                                 if(!empty($_SESSION['error'])) {
