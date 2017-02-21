@@ -12,7 +12,9 @@
 	<head>
 		<meta charset="UTF-8">
 		<title>Registrar usuario</title>
-        <link rel="stylesheet" href="css/bootstrap.min.css">
+        <link rel="stylesheet" href="css/bootstrap.css">
+        <script src="js/jquery.js"></script>
+		<script src="js/bootstrap.js"></script>
 		<style>
 			#error {
 				color: red;
@@ -101,6 +103,9 @@
         <?php 
         include ('funcion.php');
         $conexion = conectarBD();
+        if(isset($_SESSION['id']) && $_SESSION['tipoUsuario'] === 'Administrador') {
+        include 'navegacion.php';
+        }
         ?>
         <div class="registro">
             <form enctype="multipart/form-data" onSubmit="return checkPass(this) && checkCountry(this.elements['pais']);" action="registro1.php" autocomplete="on" method="post" >
@@ -108,7 +113,6 @@
                     <input type="text" class="form-control" name="nombre" maxlength="30" required placeholder="Nombre"> <br>
                     <input type="text" class="form-control" name="apellidos" maxlength="50" placeholder="Apellidos"> <br>
                     <input type="email" class="form-control" name="email" required placeholder="Correo electrónico"> <br>
-                    <strong>País:</strong> <br>
                     <select class="form-control" onchange="checkCountry(this)" name="pais" >
                         <option value="0">Elige un país</option>
                         <?php 
@@ -125,13 +129,10 @@
                     <input type="password" class="form-control" name="clave1" id="clave1" minlength="5" maxlength="10" placeholder="Contraseña" required> <br>
                     <input type="password" class="form-control" name="clave2" id="clave2" minlength="5" maxlength="10" placeholder="Vuelva a introducir la contraseña" required> <br>
                 </div>
-                <?php
+                <div id="error"><?php
                     if (!empty($_SESSION['error'])) {
-                            echo "<div class=\"alert alert-warning\" role=\"alert\" id=\"error\">".
-                                $_SESSION['error'];
-                                
-                                $_SESSION['error'] = "";
-                                echo "</div>";
+                        echo $_SESSION['error'];
+                        $_SESSION['error'] = "";
                     } else{
                         $_SESSION['error'] = "";
                     }

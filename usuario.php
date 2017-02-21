@@ -9,7 +9,9 @@
 ?>
 <html>
 	<head>
-        <link rel="stylesheet" href="css/bootstrap.min.css">
+        <link rel="stylesheet" href="css/bootstrap.css">
+        <script src="js/jquery.js"></script>
+		<script src="js/bootstrap.js"></script>
 		<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 		<title>Editar usuario</title>
 		<style>
@@ -99,10 +101,12 @@
 	</script>
 	</head>
 	<body>
-	<div class="topright"><a href="logout.php">Cerrar sesión</a></div>
 	<?php 
-		include ('funcion.php');
-		$conexion = conectarBD();
+        include 'navegacion.php';
+		if(!isset($conexion) && ($conexion !== NULL)) {
+            include ('funcion.php');
+            $conexion = conectarBD();
+		}
 		$id = mysqli_real_escape_string($conexion, $_GET['ID']);
 		$usuario = "SELECT * from usuarios WHERE IDUsuario=$id;";
 		$usuariosql = mysqli_query($conexion, $usuario);

@@ -2,17 +2,34 @@
 	session_start();
 		if((!isset($_SESSION['id'])) && (empty($_SESSION['id']))) { 
 		header('Location: login.php'); // en el futuro reusaré el script para reestablecer la contraseña
-	} elseif ($_SESSION['tipoUsuario'] == 'Usuario' ) {
+	} elseif ($_SESSION['tipoUsuario'] === 'Usuario' ) {
 		header('Location: index.php'); 
+	} elseif (!isset($_GET['ID']) && ($_GET['ID'] === "")){
+        header('Location: index.php');
 	}
-	$id = $_GET['ID'];
+	include 'funcion.php';
+	$conexion = conectarBD();
+	$id = mysqli_real_escape_string($conexion, $_GET['ID']);
 ?>
 <html>
 	<head>
 		<meta charset="UTF-8">
-		<title>Cambiar</title>
+		<title>Cambiar contraseña</title>
+		<link rel="stylesheet" href="css/bootstrap.css">
+        <script src="js/jquery.js"></script>
+		<script src="js/bootstrap.js"></script>
+		<style>			
+		.setpass {
+				position: absolute;
+				top: 50%;
+				left: 50%;
+				margin-right: -50%;
+				transform: translate(-50%, -50%)
+			}
+        </style>
 	</head>
 	<body>
+	<?php include 'navegacion.php'; ?>
 	<script type="text/javascript" >
 
 	function checkPass(f)
@@ -58,13 +75,22 @@
 		return (false);
     }
 } </script>
-		<form action="setpass1.php" onSubmit="return checkPass(this);" autocomplete="on" method="post" >
-			<input type="hidden" name="id" value="<?php echo $id ?>">
-			Nueva contraseña: <br> 
-			<input type="password" name="clave1" required> <br>
-			Vuelva a introducir la contraseña: <br>
-			<input type="password" name="clave2" required> <br>
-			<input type="submit" name="Recuperar contraseña">
-			</form>
-			<div id="error"></div>
-	</body>
+    <div class="container">
+        <div class="setpass">
+            <form class="" action="setpass1.php" onSubmit="return checkPass(this);" autocomplete="on" method="post" >
+                <div class="form-group">
+                    <input type="hidden" name="id" value="<?php echo $id ?>">
+                    <input type="password" name="clave1" required placeholder="Nueva contraseña"> <br>
+                </div>
+                <div class="form-group">
+                    <input type="password" name="clave2" required placeholder="Repita la contraseña"> <br>
+                </div>
+                <div class="submit">
+                    <button type="submit" class="btn btn-default">Cambiar contraseña</button>
+                </div>
+                
+            </form>
+                <div id="error"></div>
+        </div>
+    </div>
+</body>

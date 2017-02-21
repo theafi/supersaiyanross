@@ -7,7 +7,7 @@
 	$consultaIncidencia = "SELECT * FROM rmi.incidencias WHERE idincidencias = $idincidencia";
 	$datosIncidencia = mysqli_fetch_array(mysqli_query($conexion, $consultaIncidencia));
 	if((!isset($_SESSION['id'])) && (empty($_SESSION['id']))) {
-        $_SESSION['ultimaPaginaVisitada'] = ($_SERVER['SCRIPT_FILENAME']);
+        $_SESSION['ultimaPaginaVisitada'] = ($_SERVER['REQUEST_URI']);
         header('Location: login.php');
 
 	} 
@@ -18,7 +18,9 @@
 <html>
 	<head>
 		<meta charset="UTF-8">
-		<link rel="stylesheet" href="css/bootstrap.min.css">
+        <link rel="stylesheet" href="css/bootstrap.css">
+        <script src="js/jquery.js"></script>
+		<script src="js/bootstrap.js"></script>
 		<title>Reportar incidencia</title>
 		<style>
 				.reporte {
@@ -32,9 +34,11 @@
 				.reporte form{
 					position: relative;
 					width: 100%;
+					}
 		</style>
 	</head>
 	<body>
+	<?php include 'navegacion.php'; ?>
 		<div class="reporte">
 			<form action="enviarReporte.php" method="post" enctype="multipart/form-data">
 				<div class="form-group">

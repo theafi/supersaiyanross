@@ -62,8 +62,10 @@
             display: inline-block;
             margin: 20px auto;
 			}
-			.modificaciones table {
-				max-width: 700px;
+			.modificaciones {
+				max-width: 675px;
+			}
+			.modificaciones td{
 			}
 			.modificaciones-valores td {
 				overflow: scroll;
@@ -201,7 +203,7 @@
                         $modificadoremail = "SELECT email FROM rmi.usuarios WHERE IDUsuario = {$resultadoModificaciones['modificadaPor']};";
                         $resultadomodemail = mysqli_fetch_array(mysqli_query($conexion, $modificadoremail));
                         echo "<tr class=\"cuerpo-modificaciones\">".
-                                    "<td>{$resultadoModificaciones['idModificacion']}</td>".
+                                    "<td id=\"{$resultadoModificaciones['idModificacion']}\">{$resultadoModificaciones['idModificacion']}</td>".
                                     "<td colspan=\"4\" class=\"modificaciones-valores\"><ul>". 
                                             "<li>Modificada por: ". $resultadomodemail['email']."</li>".
                                             "<li>Fecha: ". $resultadoModificaciones['fechaModificacion']. "</li>".

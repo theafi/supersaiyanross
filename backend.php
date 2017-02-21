@@ -12,6 +12,9 @@
 	<head>
 		<meta charset="UTF-8">
 		<title>Inicio de sesión</title>
+		<link rel="stylesheet" href="css/bootstrap.css">
+        <script src="js/jquery.js"></script>
+		<script src="js/bootstrap.js"></script>
 		<style>
 			.container {
 				position: relative;
@@ -26,7 +29,7 @@
 		</style>
 	</head>
 	<body>
-	<div class="topright"><a href="logout.php">Cerrar sesión</a></div>
+	<?php include 'navegacion.php'; ?>
 	<h2>MENÚ SUPER SECRETO PARA ADMINISTRADORES</h2>
 
 		<ul>

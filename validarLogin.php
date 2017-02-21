@@ -16,15 +16,10 @@
 			$conexion = conectarBD();
 			$email = mysqli_real_escape_string($conexion, $_POST['email']);
 			$clave = $_POST['clave1'];
-			$buscaremail = "SELECT IDUsuario, Nombre, Clave, bloqueado, nErrores, tipoUsuario FROM usuarios WHERE Email = '$email';";
+			$buscaremail = "SELECT IDUsuario, Nombre, Apellidos, Clave, bloqueado, nErrores, tipoUsuario FROM usuarios WHERE Email = '$email';";
 			$consultamail = mysqli_query($conexion, $buscaremail);
 			$filas = mysqli_fetch_array($consultamail);
-			$resultadoid = print_r($filas[0], true);
-			$resultadonombre = print_r($filas[1], true);
-			$resultadoclave = print_r($filas[2], true);
-			$estadocuenta = print_r($filas[3], true);
-			$numeroerrores = print_r($filas[4], true);
-			$tipousuario = print_r($filas[5], true);
+			$resultadoclave = print_r($filas[3], true);
 			// Variables para contar tanto los intentos como si ha sido un bloqueo temporal
 			if(!isset($_SESSION['cuentaBloqueo'])) {
 				$_SESSION['cuentaBloqueo'] = 4;
@@ -91,12 +86,17 @@
 			
 			else{
 				$fecha = date("Y-m-d H:i:s");
-				$_SESSION['id'] = $resultadoid;
-				$_SESSION['nombre'] = $resultadonombre;
-				$_SESSION['email'] = $email;
+				$_SESSION['id'] = $filas['IDUsuario'];
+				$_SESSION['nombre'] = $filas['Nombre'];
+				if (isset($filas['Apellidos']) && ($filas['Apellidos'] !== NULL)) {
+                    $_SESSION['apellidos'] = $filas['Apellidos'];
+                } else{
+                    $_SESSION['apellidos'] = "";
+                }
+				$_SESSION['email'] = $filas['Email'];
 				$_SESSION['fecha'] = date("Y-m-d H:i:s");
-				$_SESSION['tipoUsuario'] = $tipousuario;
-				$actualizarusuario = "UPDATE usuarios SET nEntradas = nEntradas + 1, ultimaVisita = '$fecha' WHERE IDUsuario = '$resultadoid';";
+				$_SESSION['tipoUsuario'] = $filas['tipoUsuario'];
+				$actualizarusuario = "UPDATE usuarios SET nEntradas = nEntradas + 1, ultimaVisita = '$fecha' WHERE IDUsuario = {$filas['IDUsuario']};";
 				mysqli_query($conexion, $actualizarusuario);
 				//$_SESSION['cuentaBloqueo'] = 4;
 				if($tipousuario === 'Administrador') {

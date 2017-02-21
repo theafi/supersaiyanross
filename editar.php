@@ -53,7 +53,7 @@ sus datos han sido almacenados. -->
 		$insertarusuario = "UPDATE Usuarios SET Nombre = '$nombre', Apellidos = '$apellidos', Pais = $pais, Ciudad = '$ciudad' WHERE IDUsuario = $id;";
 		mysqli_query($conexion, $insertarusuario);
 		echo "<p>Los datos han sido introducidos correctamente.<p>";
-		header('Refresh: 5; URL=listarUsuarios.php');
+		header('Refresh: 0; URL=listarUsuarios.php');
 		?>
 		</body>
 	</html>

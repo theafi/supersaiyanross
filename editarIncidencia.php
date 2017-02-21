@@ -85,6 +85,7 @@
 		</style>
 	</head>
 	<body>
+        <?php include 'navegacion.php'; ?>
 		<div class="incidencia">
             <div class="formulario">
                 <form action="guardarModificacion.php" method="post" enctype="multipart/form-data">

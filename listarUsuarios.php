@@ -13,7 +13,9 @@
 	<head>
 		<meta name="viewport" content="width=device-width, initial-scale=1.0">
 		<title>Lista de usuarios</title>
-		<link rel="stylesheet" href="css/bootstrap.min.css">
+        <link rel="stylesheet" href="css/bootstrap.css">
+        <script src="js/jquery.js"></script>
+		<script src="js/bootstrap.js"></script>
 		<style>
 		
 			<!-- Ancho máximo de la página antes de adaptarse la tabla a dispositivos móviles.-->
@@ -185,7 +187,7 @@
 	
 	</head>
 	<body>
-		<div class="topright"><a href="logout.php">Cerrar sesión</a></div>
+	<?php include 'navegacion.php'; ?>
 		<div class="usuarios">
 			<table clas="table table-striped">
 				<thead>
@@ -238,6 +240,9 @@
 					}
 					?>
 				</tbody>
+				<tfoot>
+                    <tr><td colspan="12"><a href="registro.php"><span class="glyphicon glyphicon-plus"></span> Agregar usuario</a></td></tr>
+                </tfoot>
 			</table>
 		</div>
 		<div id="error">
@@ -250,5 +255,4 @@
 						}
 					?>
 		</div>
-			 <br> <a href="registro.php">Agregar usuario</a>
-	</body>
+			 

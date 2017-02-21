@@ -13,7 +13,6 @@ function conectarBD() {
 	$usardb = "use rmi";
 	mysqli_query($conexion, $usardb);
 	return $conexion;
-
 	}
 function subirImagen($i) {
 	if(isset($_POST['submit'])) {		

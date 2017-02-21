@@ -98,6 +98,5 @@
 				\r\n';
 		mail($para, $titulo, $mensaje); 
 		mysqli_close($conexion);
-		echo "Incidencia añadida con éxito.";
-		header('Refresh: 1; URL=incidencia.php?ID='.$idIncidencia)
+		header('Refresh: 0; URL=incidencia.php?ID='.$idIncidencia)
 ?>
