@@ -7,8 +7,14 @@
 	} 
 	include 'funcion.php';
 	$conexion = conectarBD();
+	if (isset($_GET['usuario']) && ($_GET['usuario'] !== NULL)) {
+        $usuario = mysqli_real_escape_string($conexion, $_GET['usuario']);
+        }
 	if (isset($_GET['prioridad']) && ($_GET['prioridad'] !== NULL)) {
         $prioridad = mysqli_real_escape_string($conexion, $_GET['prioridad']);
+        }
+    if (isset($_GET['buscar']) && ($_GET['buscar'] !== NULL)) {
+        $buscar = mysqli_real_escape_string($conexion, $_GET['buscar']);
         }
 	if (isset($prioridad) && ($prioridad !== NULL)) {
         switch ($prioridad) {
@@ -29,8 +35,16 @@
                 $resultadoTabla = mysqli_query($conexion, $consultaTabla);
                 break;
         }
+    
         
-        
+	} elseif (isset($buscar) && ($buscar !== NULL)) {
+        $consultaTabla = "SELECT * FROM incidencias WHERE nombre LIKE '%$buscar%' OR descripcion LIKE '%$buscar%' ORDER BY idincidencias DESC";
+        $resultadoTabla = mysqli_query($conexion, $consultaTabla);
+	
+	} elseif (isset($usuario) && ($usuario !== NULL)) {
+        $consultaTabla = "SELECT * FROM incidencias WHERE subidaPor = $usuario ORDER BY idincidencias DESC";
+        $resultadoTabla = mysqli_query($conexion, $consultaTabla);                                                                                                                                                                                              
+	
 	} else{
         $consultaTabla = "SELECT * FROM incidencias ORDER BY idincidencias DESC";
         $resultadoTabla = mysqli_query($conexion, $consultaTabla);
@@ -68,10 +82,44 @@
             .table>tbody>tr>td.columna-asunto {
                 max-width: 200px;
             }
+            /*#search {
+                position: relative;
+                width: 200px;
+                margin: auto;
+            }
+
+            #search input {
+                width: 194px;
+            }
+
+            #search button {
+                position: absolute;
+                top: 0;
+                right: 0;
+                margin: 3px 1px;
+            } */
+            .buscar{
+                margin:auto;
+            }
 		</style>
     </head>
     <body>
         <?php include 'navegacion.php'; ?>
+        <div class="container">
+            <div class="row">
+                <div class="col-md-12">
+                    <form class="buscar" role="search" action="listar_incidencias.php?buscar=" method="get">
+                        <div class="input-group add-on">
+                            <input type="text" class="form-control" placeholder="Buscar" name="buscar" id="buscar">
+                            <div class="input-group-btn">
+                                <button class="btn btn-default" type="submit"><i class="glyphicon glyphicon-search"></i></button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+        <br>
         <div class="container">
             <div class="row">
                 <div class="incidencias-usuario">
@@ -106,6 +154,20 @@
                                                     echo "<td>Pendiente</td>";
                                                 }
                                                 echo "<td>".$tabla['fechaModificacion']."</td>";
+                                    }
+                                    if (isset($buscar) && ($buscar !== NULL)){
+                                        if (mysqli_num_rows($resultadoTabla) === 0) {
+                                            echo "<tr><td colspan=\"9\">No se encuentra ninguna incidencia con esas características.</td></tr>";
+                                        }
+                                    }
+                                    elseif (isset($prioridad) && ($prioridad !== NULL)){
+                                        if (mysqli_num_rows($resultadoTabla) === 0) {
+                                            echo "<tr><td colspan=\"9\">No existe ninguna incidencia con esa prioridad en el sistema.</td></tr>";
+                                        }
+                                    } else {
+                                        if (mysqli_num_rows($resultadoTabla) === 0) {
+                                            echo "<tr><td colspan=\"9\">No existe ninguna incidencia en el sistema.</td></tr>";
+                                        }
                                     }
                                 ?>
                             </tr>

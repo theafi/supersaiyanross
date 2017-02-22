@@ -1,3 +1,18 @@
+<style>
+        .add-on .input-group-btn > .btn {
+        border-left-width:0;left:-2px;
+        -webkit-box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075);
+        box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075);
+        }
+        /* stop the glowing blue shadow */
+        .add-on .form-control:focus {
+        box-shadow:none;
+        -webkit-box-shadow:none; 
+        border-color:#cccccc; 
+        }
+
+</style>
+
 <nav class="navbar navbar-default">
             <div class="container-fluid">
             <!-- Brand and toggle get grouped for better mobile display -->
@@ -17,11 +32,13 @@
                         <li><a href="listar_incidencias.php">Incidencias</a></li>
                     </ul>
                     <ul class="nav navbar-nav navbar-right">
-                    <form class="navbar-form navbar-left">
-                        <div class="form-group">
-                        <input type="text" class="form-control" placeholder="Buscar">
+                    <form class="navbar-form navbar-left" action="listar_incidencias.php?buscar=" method="get">
+                        <div class="input-group add-on">
+                        <input type="text" class="form-control" placeholder="Buscar" name="buscar" id="buscar">
+                        <div class="input-group-btn">
+                            <button class="btn btn-default" type="submit"><i class="glyphicon glyphicon-search"></i></button>
                         </div>
-                        <button type="submit" post="buscar.php" class="btn btn-default">Buscar</button>
+                    </div>
                     </form>
                         <li class="dropdown">
                         <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><?php

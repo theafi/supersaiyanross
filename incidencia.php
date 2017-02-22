@@ -17,7 +17,9 @@
 	<head>
 		<meta charset="UTF-8">
 		<title>Ver incidencia</title>
-		<link rel="stylesheet" href="css/bootstrap.min.css">
+		<link rel="stylesheet" href="css/bootstrap.css">
+        <script src="js/jquery.js"></script>
+        <script src="js/bootstrap.js"></script>
 		<style> 
 				.incidencia {
                 width: 50%;
@@ -85,6 +87,7 @@
 		</style>
 	</head>
 	<body>
+        <?php include 'navegacion.php'; ?>
         <div class="tablas">
             <div class="incidencia">
                 <table class="table tablaincidencias">

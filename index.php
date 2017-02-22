@@ -82,7 +82,7 @@
                 <div class="incidencias-usuario">
                     <table class="table table-striped">
                         <thead>
-                            <tr><th colspan="4">Tus incidencias</th><th style="text-align:center;">Fecha de modificación</th></tr>
+                            <tr><th colspan="4">Tus incidencias <small><a href="listar_incidencias.php?usuario=<?php echo $idusuario; ?>">Ver más</a></small></th><th style="text-align:center;">Fecha de modificación</th></tr>
                         </thead>
                         <tbody>
                             <tr>
@@ -146,15 +146,19 @@
                                 if(!empty($ejecutarPrioridad) && ($ejecutarPrioridad !== NULL)) {
                                     $consultaPrioridad = "SELECT idincidencias, nombre, estado, prioridad, fechaExpedicion FROM incidencias WHERE prioridad = 'Alta' AND estado <> 'Resuelta' ORDER BY fechaExpedicion DESC LIMIT 5";
                                     $ejecutarPrioridad = mysqli_query($conexion, $consultaPrioridad);
-                                    while ($resultado = mysqli_fetch_array($ejecutarPrioridad)) {
-                                                echo "<tr><td class=\"idincidencias\"><a href=\"incidencia.php?ID={$resultado['idincidencias']}\">{$resultado['idincidencias']}</a></td>".
-                                                "<td id=\"asunto columna-asunto\">". htmlspecialchars($resultado['nombre']). "</td>".
-                                                "<td>{$resultado['estado']}</td>".
-                                                "<td>{$resultado['prioridad']}</td>".
-                                                "<td align=\"center\">{$resultado['fechaExpedicion']}</td>"; 
+                                    if (mysqli_num_rows($ejecutarPrioridad) === 0) {
+                                        echo "<td colspan=\"5\">No hay ninguna incidencia en activo con esta prioridad.</td>";
+                                    } else {
+                                        while ($resultado = mysqli_fetch_array($ejecutarPrioridad)) {
+                                                    echo "<tr><td class=\"idincidencias\"><a href=\"incidencia.php?ID={$resultado['idincidencias']}\">{$resultado['idincidencias']}</a></td>".
+                                                    "<td id=\"asunto columna-asunto\">". htmlspecialchars($resultado['nombre']). "</td>".
+                                                    "<td>{$resultado['estado']}</td>".
+                                                    "<td>{$resultado['prioridad']}</td>".
+                                                    "<td align=\"center\">{$resultado['fechaExpedicion']}</td>"; 
+                                        }
                                     }
                                 } else{
-                                    echo "<td colspan=\"5\">No existe ninguna incidencia en activo con esta prioridad.</td>"; 
+                                    echo "<td colspan=\"5\">No hay ninguna incidencia en activo con esta prioridad.</td>"; 
                                     } 
                                 ?>
                             </tr>
@@ -173,16 +177,20 @@
                                 <?php
                                         $consultaPrioridad = "SELECT idincidencias, nombre, estado, prioridad, fechaExpedicion FROM incidencias WHERE prioridad = 'Baja' AND estado <> 'Resuelta' ORDER BY fechaExpedicion DESC LIMIT 5";
                                         $ejecutarPrioridad = mysqli_query($conexion, $consultaPrioridad);
-                                        if(!empty($ejecutarPrioridad)) {
-                                            while ($resultado = mysqli_fetch_array($ejecutarPrioridad)) {
-                                                echo "<tr><td class=\"idincidencias\"><a href=\"incidencia.php?ID={$resultado['idincidencias']}\">{$resultado['idincidencias']}</a></td>".
-                                                    "<td id=\"asunto columna-asunto\">". htmlspecialchars($resultado['nombre']). "</td>".
-                                                    "<td>{$resultado['estado']}</td>".
-                                                    "<td>{$resultado['prioridad']}</td>".
-                                                    "<td align=\"center\">{$resultado['fechaExpedicion']}</td>";
-                                            } 
-                                    }  else {
-                                                echo "<td colspan=\"5\">No existe ninguna incidencia en activo con esta prioridad.</td>";  
+                                        if(!empty($ejecutarPrioridad) && ($ejecutarPrioridad !== NULL)) {
+                                            if (mysqli_num_rows($ejecutarPrioridad) === 0) {
+                                                echo "<td colspan=\"5\">No hay ninguna incidencia en activo con esta prioridad.</td>";
+                                            } else {
+                                                while ($resultado = mysqli_fetch_array($ejecutarPrioridad)) {
+                                                    echo "<tr><td class=\"idincidencias\"><a href=\"incidencia.php?ID={$resultado['idincidencias']}\">{$resultado['idincidencias']}</a></td>".
+                                                        "<td id=\"asunto columna-asunto\">". htmlspecialchars($resultado['nombre']). "</td>".
+                                                        "<td>{$resultado['estado']}</td>".
+                                                        "<td>{$resultado['prioridad']}</td>".
+                                                        "<td align=\"center\">{$resultado['fechaExpedicion']}</td>";
+                                                } 
+                                            }
+                                        } else {
+                                                echo "<td colspan=\"5\">No hay ninguna incidencia en activo con esta prioridad.</td>";  
                                         } 
                             ?>
                             </tr>
@@ -200,13 +208,17 @@
                                     <?php
                                         $consultaPrioridad = "SELECT idincidencias, nombre, estado, prioridad, fechaExpedicion FROM incidencias WHERE prioridad = 'No definida' AND estado <> 'Resuelta' ORDER BY fechaExpedicion DESC LIMIT 5 ";
                                         $ejecutarPrioridad = mysqli_query($conexion, $consultaPrioridad);
-                                        if(!empty($ejecutarPrioridad)) {
+                                        if(!empty($ejecutarPrioridad) && ($ejecutarPrioridad !== NULL)) {
+                                            if (mysqli_num_rows($ejecutarPrioridad) === 0) {
+                                                echo "<td colspan=\"5\">No hay ninguna incidencia en activo con esta prioridad.</td>";
+                                            } else {
                                             while ($resultado = mysqli_fetch_array($ejecutarPrioridad)) {
                                                 echo "<tr><td class=\"idincidencias\"><a href=\"incidencia.php?ID={$resultado['idincidencias']}\">{$resultado['idincidencias']}</a></td>".
                                                         "<td class=\"asunto columna-asunto\">". htmlspecialchars($resultado['nombre']). "</td>".
                                                         "<td>{$resultado['estado']}</td>".
                                                         "<td>{$resultado['prioridad']}</td>".
                                                         "<td align=\"center\">{$resultado['fechaExpedicion']}</td>";
+                                            }
                                             }
                                         } else{ echo "<td colspan=\"5\">No existe ninguna incidencia en activo con esta prioridad.</td>"; }
                                     ?>
@@ -228,10 +240,14 @@
                                         $consultaModificacion = "SELECT idincidencia, idModificacion, fechaModificacion, motivo, modificadaPor FROM incidencias_modificaciones ORDER BY fechaModificacion DESC LIMIT 17";
                                         $ejecutarModificacion = mysqli_query($conexion, $consultaModificacion);
                                         if (!empty($ejecutarModificacion) && ($ejecutarModificacion !== NULL)) {
+                                            if (mysqli_num_rows($ejecutarModificacion) === 0) {
+                                                echo "<td colspan=\"5\">No se ha realizado ninguna modificación en el sistema.</td>";
+                                            } else {
                                             while ($resultadoMod = mysqli_fetch_array($ejecutarModificacion)) {
                                                 $usuarioEmail = mysqli_query($conexion, "SELECT Email FROM usuarios WHERE IDUsuario = {$resultadoMod['modificadaPor']}");
                                                 $resultadoEmail = mysqli_fetch_array($usuarioEmail);
                                                 echo "<tr><td class=\"modificaciones\" colspan=\"5\"><small><ul><li>El usuario ". htmlspecialchars($resultadoEmail[0]). " modificó la incidencia #<a href=\"incidencia.php?ID={$resultadoMod['idincidencia']}#{$resultadoMod['idModificacion']}\">{$resultadoMod['idincidencia']}</a> </li><li>Motivo: ". htmlspecialchars($resultadoMod['motivo']). "</li></ul></small></td></tr>";
+                                                }
                                             }
                                         } else {
                                             echo "<tr><td colspan=\"5\">No se ha realizado ninguna modificación en el sistema</td></tr>";
