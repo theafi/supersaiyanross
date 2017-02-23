@@ -82,18 +82,22 @@
                 <div class="incidencias-usuario">
                     <table class="table table-striped">
                         <thead>
-                            <tr><th colspan="4">Tus incidencias <small><a href="listar_incidencias.php?usuario=<?php echo $idusuario; ?>">Ver más</a></small></th><th style="text-align:center;">Fecha de modificación</th></tr>
+                            <tr><th colspan="4">Tus incidencias       <small><a href="listar_incidencias.php?usuario=<?php echo $idusuario; ?>">   Ver más</a></small></th><th style="text-align:center;">Fecha de modificación</th></tr>
                         </thead>
                         <tbody>
                             <tr>
                                 <?php
                                     if ((isset($idusuario)) && (!empty($resultadoTablaUsuario))) {
-                                        while ($tablaUsuario = mysqli_fetch_array($resultadoTablaUsuario)) {
-                                            echo "<tr><td class=\"idincidencias \"><a href=\"incidencia.php?ID={$tablaUsuario['idincidencias']}\">{$tablaUsuario['idincidencias']}</a></td>".
-                                                "<td class=\"asunto columna-asunto\" >". htmlspecialchars($tablaUsuario['nombre']). "</td>".
-                                                "<td class=\"\">{$tablaUsuario['estado']}</td>".
-                                                "<td class=\"\">{$tablaUsuario['prioridad']}</td>".
-                                                "<td class=\"\" align=\"center\">{$tablaUsuario['fechaModificacion']}</td>";
+                                        if(mysqli_num_rows($resultadoTablaUsuario) === 0) {
+                                            echo "<td colspan=\"5\">No tiene ninguna incidencia pendiente o en activo.</td>";
+                                        } else{
+                                            while ($tablaUsuario = mysqli_fetch_array($resultadoTablaUsuario)) {
+                                                echo "<tr><td class=\"idincidencias \"><a href=\"incidencia.php?ID={$tablaUsuario['idincidencias']}\">{$tablaUsuario['idincidencias']}</a></td>".
+                                                    "<td class=\"asunto columna-asunto\" >". htmlspecialchars($tablaUsuario['nombre']). "</td>".
+                                                    "<td class=\"\">{$tablaUsuario['estado']}</td>".
+                                                    "<td class=\"\">{$tablaUsuario['prioridad']}</td>".
+                                                    "<td class=\"\" align=\"center\">{$tablaUsuario['fechaModificacion']}</td>";
+                                                }
                                             }
                                     } else{
                                         echo "<td colspan=\"5\">No tiene ninguna incidencia pendiente o en activo.</td>";
@@ -107,6 +111,7 @@
                     </table>
                 </div>
             </div>
+            <?php if ($_SESSION['tipoUsuario'] === 'Administrador'): ?> 
             <div class="row">
                 <div class="col-md-6">
                     <table class="table table-striped">
@@ -260,6 +265,41 @@
                             </tfoot>
                         </table>
                     </div>
-            </div>
+                    <?php endif; ?>
+                    <?php if($_SESSION['tipoUsuario'] === 'Usuario'): ?>
+                    <div class="row">
+                        <div class="incidencias-usuario">
+                            <table class="table table-striped">
+                                <thead>
+                                    <tr><th colspan="4">Línea de tiempo      <small><a href="listar_incidencias.php?usuario=<?php echo $idusuario; ?>">   Ver más</a></small></th><th style="text-align:center;">Fecha de modificación</th></tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <?php
+                                            $consultaModificacion = "SELECT idincidencia, idModificacion, fechaModificacion, motivo, modificadaPor FROM incidencias_modificaciones WHERE subidaPor = $idusuario ORDER BY fechaModificacion DESC LIMIT 17";
+                                            $ejecutarModificacion = mysqli_query($conexion, $consultaModificacion);
+                                            if (!empty($ejecutarModificacion) && ($ejecutarModificacion !== NULL)) {
+                                                if (mysqli_num_rows($ejecutarModificacion) === 0) {
+                                                    echo "<td colspan=\"5\">No se ha realizado ninguna modificación en sus incidencias.</td>";
+                                                } else {
+                                                    while ($resultadoMod = mysqli_fetch_array($ejecutarModificacion)) {
+                                                    $usuarioEmail = mysqli_query($conexion, "SELECT Email FROM usuarios WHERE IDUsuario = {$resultadoMod['modificadaPor']}");
+                                                    $resultadoEmail = mysqli_fetch_array($usuarioEmail);
+                                                    echo "<tr><td class=\"modificaciones\" colspan=\"5\"><small><ul><li>El usuario ". htmlspecialchars($resultadoEmail[0]). " modificó la incidencia #<a href=\"incidencia.php?ID={$resultadoMod['idincidencia']}#{$resultadoMod['idModificacion']}\">{$resultadoMod['idincidencia']}</a> </li><li>Motivo: ". htmlspecialchars($resultadoMod['motivo']). "</li></ul></small></td></tr>";
+                                                    }
+                                                }
+                                            } else {
+                                                echo "<tr><td colspan=\"5\">No se ha realizado ninguna modificación en sus incidencias.</td></tr>";
+                                            } 
+                                        ?>
+                                    </tr>
+                                </tbody>
+                                <tfoot>
+                                    <tr><td colspan="5"><a href="nuevaIncidencia.php"><span class="glyphicon glyphicon-plus"> </span> Añadir incidencia</a></td></tr>
+                                </tfoot>
+                            </table>
+                        </div>
+                    </div>
+                <?php endif; ?>
     </body>
 </html>

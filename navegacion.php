@@ -47,8 +47,10 @@
                             $conexion = conectarBD();
                             global $conexion;
                         }
-                        $nombre = $_SESSION['nombre'];
-                        $apellidos = $_SESSION['apellidos'];
+                        $nombre = htmlspecialchars($_SESSION['nombre']);
+                        if (isset($_SESSION['apellidos'])){
+                            $apellidos = htmlspecialchars($_SESSION['apellidos']);
+                        }
                         echo $nombre;
                         if (isset($apellidos) && ($apellidos !== NULL)) {
                         echo " ".$apellidos;

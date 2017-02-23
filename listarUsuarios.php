@@ -14,6 +14,7 @@
 		<meta name="viewport" content="width=device-width, initial-scale=1.0">
 		<title>Lista de usuarios</title>
         <link rel="stylesheet" href="css/bootstrap.css">
+        <link rel="stylesheet" href="css/style.css">
         <script src="js/jquery.js"></script>
 		<script src="js/bootstrap.js"></script>
 		<style>
@@ -65,7 +66,7 @@
 				}
 				
 
-				td:nth-of-type(1):before { content: "CÓDIGO DE USUARIO"; }
+				td:nth-of-type(1):before { content: "CÓD. USUARIO"; }
 				td:nth-of-type(2):before { content: "NOMBRE"; }
 				td:nth-of-type(3):before { content: "APELLIDO"; }
 				td:nth-of-type(4):before { content: "EMAIL"; }
@@ -181,8 +182,6 @@
 					border-radius:6px;
 					-moz-border-radius:6px;
 				}
-
-
 	</style>
 	
 	</head>
@@ -191,7 +190,7 @@
 		<div class="usuarios">
 			<table clas="table table-striped">
 				<thead>
-					<tr bgcolor="#DDDDDD"><th>CÓDIGO DE USUARIO</th><th>NOMBRE</th><th>APELLIDO</th><th>EMAIL</th><th>CIUDAD</th><th>PAIS</th><th>TIPO DE USUARIO</th><th>FECHA DE ALTA</th><th>Nº DE ENTRADAS AL SISTEMA</th><th>Nº DE INICIOS DE SESIÓN ERRÓNEOS</th><th>ÚLTIMO INICIO DE SESIÓN</th><th>OPERACIONES</th></tr>
+					<tr bgcolor="#DDDDDD"><th>CÓD. USUARIO</th><th>NOMBRE</th><th>APELLIDO</th><th>EMAIL</th><th>CIUDAD</th><th>PAIS</th><th>TIPO DE USUARIO</th><th>FECHA DE ALTA</th><th>Nº DE ENTRADAS AL SISTEMA</th><th>Nº DE INICIOS DE SESIÓN ERRÓNEOS</th><th>ÚLTIMO INICIO DE SESIÓN</th><th>OPERACIONES</th></tr>
 				</thead>
 				<tbody>
 					<?php
@@ -212,9 +211,9 @@
 						$ejecutarConsulta = mysqli_query($conexion, $consultapais);
 						$resConsultaPais = mysqli_fetch_assoc($ejecutarConsulta);
 						if ($row['bloqueado'] == 0) {
-							$candadito = "<img src=\"unlock.png\" height=\"20\" width=\"20\" title=\"Bloquear usuario\" alt=\"Bloquear usuario\">";
+							$candadito = "<span title=\"Bloquear usuario\" class=\"icon-unlocked\"></span> ";
 						} else {
-							$candadito = "<img src=\"lock.png\" height=\"20\" title=\"Desbloquear usuario\" alt=\"Desbloquear usuario\">";
+							$candadito = "<span title=\"Desbloquear usuario\" class=\"icon-lock\"></span> ";
 						}
 
 						echo "<tr class='$clase'>".
@@ -230,10 +229,11 @@
 							"<td>{$row['nErrores']}</td>".
 							"<td>{$row['ultimaVisita']}</td>".
 							"<td class='admin'>".
-							"<a title=\"Editar usuario\" href='usuario.php?ID={$row['IDUsuario']}'><img src=\"y.png\" title=\"Editar usuario\" alt=\"Editar usuario\" width=\"20\" height=\"20\"></a>".
-							"<a title=\"Cambiar contraseña\" href='setpass.php?ID={$row['IDUsuario']}'><img src=\"z.png\" title=\"Cambiar contraseña\" alt=\"Cambiar contraseña\" width=\"20\" height=\"20\"></a>".
+							"<a title=\"Ver incidencias\" href='listar_incidencias.php?usuario={$row['IDUsuario']}'><span class=\"icon-eye\"></span> </a>".
+							"<a title=\"Editar usuario\" href='usuario.php?ID={$row['IDUsuario']}'><span class=\"icon-pencil\"></span> </a>".
+							"<a title=\"Cambiar contraseña\" href='setpass.php?ID={$row['IDUsuario']}'><span class=\"icon-key\"></span> </a>".
 							"<a href='bloquearUsuario.php?ID={$row['IDUsuario']}'>". $candadito ."</a>".
-							"<a title=\"Eliminar usuario\" href='borrarUsuario.php?ID={$row['IDUsuario']}' onclick=\"return confirm('¿Desea eliminar el registro?')\"><img src=\"x.png\" title=\"Eliminar usuario\" alt=\"Eliminar usuario\" width=\"20\" height=\"20\"></a>".
+							"<a title=\"Eliminar usuario\" href='borrarUsuario.php?ID={$row['IDUsuario']}' onclick=\"return confirm('¿Desea eliminar el registro?')\"><span class=\"icon-cross\"></span> </a>".
 							"</td>".
 						 "</tr>";
 						 $hola++;

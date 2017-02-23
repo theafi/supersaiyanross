@@ -31,7 +31,7 @@
 		$ciudad = mysqli_real_escape_string($conexion, $_POST['ciudad']);
 		$pais = $_POST['pais'];
 		$clave = $_POST['clave1'];
-		$compemail =  ("SELECT Email FROM Usuarios WHERE Email='$email';") or die(mysqli_error());
+		$compemail =  ("SELECT Email FROM usuarios WHERE Email='$email';") or die(mysqli_error());
 		$emailenlatabla = mysqli_query($conexion, $compemail);
 		$filasmail = mysqli_num_rows($emailenlatabla);
 		if ($filasmail != 0) {
@@ -50,30 +50,33 @@
 			$insertarusuario = "INSERT INTO usuarios(Nombre, Apellidos, Email, Ciudad, Pais, Clave) VALUES ('$nombre', '$apellidos', '$email', '$ciudad', $pais, '$clavecifrada');";
 			mysqli_query($conexion, $insertarusuario);
 
-			$iddelusuario = "SELECT IDUsuario, tipoUsuario FROM rmi.Usuarios WHERE Email = '$email';";
+			$iddelusuario = "SELECT IDUsuario, tipoUsuario FROM rmi.usuarios WHERE Email = '$email';";
 			$consultausuario = mysqli_query($conexion, $iddelusuario);
 			$filas = mysqli_fetch_array($consultausuario);
 			$idresultado = print_r($filas[0], true);
 			$tiporesultado = print_r($filas[1], true);
 			$fecha = date("Y-m-d H:i:s");
-			if ((NULL !== $_SESSION['tipoUsuario']) && ($_SESSION['tipoUsuario'] != 'Administrador')) {
-				$_SESSION['id'] = $idresultado;
-				$_SESSION['nombre'] = $nombre;
-				$_SESSION['email'] = $email;
-				$_SESSION['fecha'] = date("Y-m-d H:i:s");
-				$_SESSION['tipoUsuario'] = $tiporesultado;
-				$_SESSION['error'] = "";
-				$actualizarusuario = "UPDATE usuarios SET nEntradas = nEntradas + 1, ultimaVisita = '$fecha' WHERE IDUsuario = '$idresultado';";
-				mysqli_query($conexion, $actualizarusuario);
-				echo "<p>Usuario registrado con éxito. En breve se le redirigirá a la página principal.<p>";
-			}
+			if (!isset($_SESSION['tipoUsuario'])) {
+                if ($_SESSION['tipoUsuario'] != 'Administrador') {
+                    $_SESSION['id'] = $idresultado;
+                    $_SESSION['nombre'] = $nombre;
+                    $_SESSION['apellidos'] = $apellidos;
+                    $_SESSION['email'] = $email;
+                    $_SESSION['fecha'] = date("Y-m-d H:i:s");
+                    $_SESSION['tipoUsuario'] = $tiporesultado;
+                    $_SESSION['error'] = "";
+                    $actualizarusuario = "UPDATE usuarios SET nEntradas = nEntradas + 1, ultimaVisita = '$fecha' WHERE IDUsuario = '$idresultado';";
+                    mysqli_query($conexion, $actualizarusuario);
+                    echo "<p>Usuario registrado con éxito. En breve se le redirigirá a la página principal.<p>";
+                }
+            }
 
 			mysqli_close($conexion);
 			if ($_SESSION['tipoUsuario'] == 'Administrador') {
-				header('Refresh: 0; URL=listarUsuarios.php');
+				//header('Refresh: 0; URL=listarUsuarios.php');
 				//echo $insertarusuario;
 			} else {
-				header('Refresh: 0; URL=index.php');
+				//header('Refresh: 0; URL=index.php');
 				//echo $insertarusuario;
 			}
 		};
