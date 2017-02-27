@@ -1,3 +1,4 @@
+<!DOCTYPE html>
 <style>
         .add-on .input-group-btn > .btn {
         border-left-width:0;left:-2px;
@@ -56,12 +57,11 @@
                         echo " ".$apellidos;
                         } ?> <span class="caret"></span></a>
                         <ul class="dropdown-menu">
-                            <li><a href="#">Action</a></li>
-                            <li><a href="#">Another action</a></li>
-                            <?php if ($_SESSION['tipoUsuario'] === 'Administrador') {
-                                echo "<li><a href=\"backend.php\">Panel de administración</a></li>";
-                                }
-                            ?>
+                            <li><a href="listar_incidencias.php?usuario=<?php echo $_SESSION['id']; ?>">Ver tus incidencias</a></li>
+                            <li><a href="listar_incidencias.php?historial">Últimas modificaciones</a></li>
+                            <?php if ($_SESSION['tipoUsuario'] === 'Administrador'): ?>
+                                <li><a href="backend.php">Panel de administración</a></li>
+                            <?php endif; ?>
                             <li role="separator" class="divider"></li>
                             <li><a href="logout.php">Cerrar sesión</a></li>
                         </ul>

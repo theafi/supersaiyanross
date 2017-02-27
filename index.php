@@ -39,8 +39,7 @@
             width: 50px;
             }
             .incidencias-usuario {
-            width: 800px;
-            max-width: 900px;
+            max-width: 1140px;
             text-align: center;
             margin: auto;
             margin-top: 10px;
@@ -121,16 +120,20 @@
                         <tbody>
                             <tr>
                                 <?php
+								if(!empty($ejecutarPrioridad) && ($ejecutarPrioridad !== NULL)) {
                                     $consultaPrioridad = "SELECT idincidencias, nombre, estado, prioridad, fechaExpedicion FROM incidencias WHERE prioridad = 'Máxima' AND estado <> 'Resuelta' ORDER BY fechaExpedicion DESC LIMIT 5";
                                     $ejecutarPrioridad = mysqli_query($conexion, $consultaPrioridad);
-                                    if ($ejecutarPrioridad !== NULL) {
-                                        while ($resultado = mysqli_fetch_array($ejecutarPrioridad)) {
-                                            echo "<tr><td class=\"idincidencias\"><a href=\"incidencia.php?ID={$resultado['idincidencias']}\">{$resultado['idincidencias']}</a></td>".
-                                                    "<td class=\"asunto columna-asunto\">". htmlspecialchars($resultado['nombre']). "</td>".
-                                                    "<td class=\"\">{$resultado['estado']}</td>".
-                                                    "<td class=\"\">{$resultado['prioridad']}</td>".
-                                                    "<td class=\"\" align=\"center\">{$resultado['fechaExpedicion']}</td>";
-                                        }
+									if(mysqli_num_rows($ejecutarPrioridad) === 0) {
+                                            echo "<td colspan=\"5\">No tiene ninguna incidencia pendiente o en activo.</td>";
+                                    } else{
+											while ($resultado = mysqli_fetch_array($ejecutarPrioridad)) {
+												echo "<tr><td class=\"idincidencias\"><a href=\"incidencia.php?ID={$resultado['idincidencias']}\">{$resultado['idincidencias']}</a></td>".
+														"<td class=\"asunto columna-asunto\">". htmlspecialchars($resultado['nombre']). "</td>".
+														"<td class=\"\">{$resultado['estado']}</td>".
+														"<td class=\"\">{$resultado['prioridad']}</td>".
+														"<td class=\"\" align=\"center\">{$resultado['fechaExpedicion']}</td>";
+											}
+										}
                                     } else {
                                         echo "<td colspan=\"5\">No existe ninguna incidencia en activo con esta prioridad.</td>";
                                     } 
@@ -237,7 +240,7 @@
                 <div class="col-md-6 col-xs-12">
                     <table class="table table-striped">
                             <thead>
-                                <tr><th colspan="5"><span class="glyphicon glyphicon-time"></span> Línea del tiempo</th></tr>
+                                <tr><th colspan="5"><span class="glyphicon glyphicon-time"></span> Línea del tiempo <small><a href="listar_incidencias.php?historial">Ver más</a></small></th></tr>
                             </thead>
                             <tbody>
                                 <tr>
@@ -261,7 +264,7 @@
                                 </tr>
                             </tbody>
                             <tfoot>
-                                <tr><td colspan="5"><small><a href="listar_incidencias.php?tabla=historial">Ver más</a></small></td></tr>
+                                <tr><td colspan="5"></td></tr>
                             </tfoot>
                         </table>
                     </div>
@@ -271,7 +274,7 @@
                         <div class="incidencias-usuario">
                             <table class="table table-striped">
                                 <thead>
-                                    <tr><th colspan="4">Línea de tiempo      <small><a href="listar_incidencias.php?usuario=<?php echo $idusuario; ?>">   Ver más</a></small></th><th style="text-align:center;">Fecha de modificación</th></tr>
+                                    <tr><th colspan="5">Línea de tiempo      <small><a href="listar_incidencias.php?historial">Ver más</a></small></th></tr>
                                 </thead>
                                 <tbody>
                                     <tr>
@@ -295,7 +298,7 @@
                                     </tr>
                                 </tbody>
                                 <tfoot>
-                                    <tr><td colspan="5"><a href="nuevaIncidencia.php"><span class="glyphicon glyphicon-plus"> </span> Añadir incidencia</a></td></tr>
+                                    <tr><td colspan="5"></td></tr>
                                 </tfoot>
                             </table>
                         </div>

@@ -13,11 +13,15 @@
 	<head>
 		<meta name="viewport" content="width=device-width, initial-scale=1.0">
 		<title>Lista de usuarios</title>
+		<link rel="stylesheet" href="css/style.css">
         <link rel="stylesheet" href="css/bootstrap.css">
-        <link rel="stylesheet" href="css/style.css">
         <script src="js/jquery.js"></script>
 		<script src="js/bootstrap.js"></script>
 		<style>
+				a{
+					text-decoration: none;
+
+				}
 		
 			<!-- Ancho máximo de la página antes de adaptarse la tabla a dispositivos móviles.-->
 			#error {
@@ -182,6 +186,7 @@
 					border-radius:6px;
 					-moz-border-radius:6px;
 				}
+
 	</style>
 	
 	</head>

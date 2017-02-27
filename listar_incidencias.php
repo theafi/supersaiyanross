@@ -13,9 +13,13 @@
 	if (isset($_GET['prioridad']) && ($_GET['prioridad'] !== NULL)) {
         $prioridad = mysqli_real_escape_string($conexion, $_GET['prioridad']);
         }
+	if (isset($_GET['historial']) && ($_GET['historial'] !== NULL)) {
+        $historial = mysqli_real_escape_string($conexion, $_GET['historial']);
+        }
     if (isset($_GET['buscar']) && ($_GET['buscar'] !== NULL)) {
         $buscar = mysqli_real_escape_string($conexion, $_GET['buscar']);
         }
+
 	if (isset($prioridad) && ($prioridad !== NULL)) {
         switch ($prioridad) {
             case 'Máxima':
@@ -37,10 +41,37 @@
         }
     
         
+	} elseif (isset($historial) && ($historial !== NULL)){
+		$tipoUsuario = $_SESSION['tipoUsuario'];
+		switch ($tipoUsuario)  {
+			case 'Administrador':
+				$consultaTabla = "SELECT * FROM incidencias_modificaciones";
+				$resultadoTabla = mysqli_query($conexion, $consultaTabla);
+				break;
+			case 'Usuario':
+				$idusuario = $_SESSION['id'];
+				$consultaTabla = "SELECT * FROM incidencias_modificaciones WHERE idincidencia IN (SELECT idincidencias FROM incidencias WHERE subidaPor = $idusuario)";
+				$resultadoTabla = mysqli_query($conexion, $consultaTabla);
+				break;
+		}
 	} elseif (isset($buscar) && ($buscar !== NULL)) {
+		if (isset($historial) && ($historial !== NULL)) {
+		$tipoUsuario = $_SESSION['tipoUsuario'];
+		switch ($tipoUsuario) {
+			case 'Administrador':
+				$consultaTabla = "SELECT * FROM incidencias_modificaciones WHERE idincidencia LIKE %$buscar% OR motivo LIKE %$buscar% OR modificadaPor IN (SELECT IDUsuario FROM usuarios WHERE Email LIKE %$buscar%)";
+				$resultadoTabla = mysqli_query($conexion, $consultaTabla);
+				break;
+			case 'Usuario':
+				$idusuario = $_SESSION['id'];
+				$consultaTabla = "SELECT * FROM incidencias_modificaciones WHERE idincidencia IN (SELECT idincidencias FROM incidencias WHERE subidaPor = $idusuario) AND (idincidencia LIKE %$buscar% OR motivo LIKE %$buscar% OR modificadaPor IN (SELECT IDUsuario FROM usuarios WHERE Email LIKE %$buscar%))";
+				$resultadoTabla = mysqli_query($conexion, $consultaTabla);
+				break;
+		} 
+		} else {
         $consultaTabla = "SELECT * FROM incidencias WHERE nombre LIKE '%$buscar%' OR descripcion LIKE '%$buscar%' ORDER BY idincidencias DESC";
         $resultadoTabla = mysqli_query($conexion, $consultaTabla);
-	
+		}
 	} elseif (isset($usuario) && ($usuario !== NULL)) {
         $consultaTabla = "SELECT * FROM incidencias WHERE subidaPor = $usuario ORDER BY idincidencias DESC";
         $resultadoTabla = mysqli_query($conexion, $consultaTabla);                                                                                                                                                                                              
@@ -66,7 +97,12 @@
 			td:first-child, th:first-child {
 				 border-left: none;
                 }
-                
+            .incidencias-usuario{
+				max-width: 1200px;
+			}
+			.incidencias-modificaciones{
+				max-width: 1200px;
+			}
             table {
 				border-collapse:separate;
 				border:solid grey 1px;
@@ -108,7 +144,7 @@
         <div class="container">
             <div class="row">
                 <div class="col-md-12">
-                    <form class="buscar" role="search" action="listar_incidencias.php?buscar=" method="get">
+                    <form class="buscar" role="search" action="<?php if (isset($historial)) {echo "listar_incidencias.php?historial&buscar=";} else{echo "listar_incidencias.php?buscar=";} ?>" method="get">
                         <div class="input-group add-on">
                             <input type="text" class="form-control" placeholder="Buscar" name="buscar" id="buscar">
                             <div class="input-group-btn">
@@ -120,6 +156,7 @@
             </div>
         </div>
         <br>
+		<?php if (!isset($historial)): ?>
         <div class="container">
             <div class="row">
                 <div class="incidencias-usuario">
@@ -135,12 +172,12 @@
                                                 $consultaUsuario = "SELECT Email FROM usuarios WHERE IDUsuario = {$tabla['subidaPor']}";
                                                 $resultadoUsuario = mysqli_query($conexion, $consultaUsuario);
                                                 $usuario = mysqli_fetch_array($resultadoUsuario);
-                                                echo "<td>". $usuario[0]. "</td>";
+                                                echo "<td>". htmlspecialchars($usuario[0]). "</td>";
                                                 $consultaAdmin = "SELECT Email FROM usuarios WHERE IDUsuario = {$tabla['asignadaA']}";
                                                 $resultadoAdmin = mysqli_query($conexion, $consultaAdmin);
                                                 $admin = @mysqli_fetch_array($resultadoAdmin);
                                                 if (@mysqli_num_rows($resultadoAdmin) === 1 ) {
-                                                        echo "<td>".$admin['Email']."</td>";
+                                                        echo "<td>".htmlspecialchars($admin['Email'])."</td>";
                                                     } else {
                                                         echo "<td>Nadie</td>";
                                                     }
@@ -178,4 +215,46 @@
                     </table>
                 </div>
             </div>
+		<?php endif;
+		if (isset($historial) && ($historial !== NULL)): ?>
+		<div class="container">
+            <div class="row">
+                <div class="incidencias-modificaciones">
+                    <table class="table table-striped">
+                        <thead>
+                            <tr><th colspan="5" style="">Línea del tiempo</th></tr>
+                        </thead>
+                        <tbody>
+									<tr>
+                                        <?php
+                                            
+                                            if (!empty($resultadoTabla) && ($resultadoTabla !== NULL)) {
+                                                if (mysqli_num_rows($resultadoTabla) === 0) {
+														if ($_SESSION['tipoUsuario'] === 'Usuario'){
+															echo "<td colspan=\"5\">No se ha realizado ninguna modificación en sus incidencias.</td>";
+														} else {
+															echo "<td colspan=\"5\">No se ha realizado ninguna modificación en el sistema.</td>";
+														}
+                                                } else {
+                                                    while ($resultadoMod = mysqli_fetch_array($resultadoTabla)) {
+                                                    $usuarioEmail = mysqli_query($conexion, "SELECT Email FROM usuarios WHERE IDUsuario = {$resultadoMod['modificadaPor']}");
+                                                    $resultadoEmail = mysqli_fetch_array($usuarioEmail);
+                                                    echo "<tr><td>{$resultadoMod['fechaModificacion']}</td><td class=\"asunto asunto-modificaciones\" colspan=\"4\" align=\"left\"><small><ul><li>El usuario ". htmlspecialchars($resultadoEmail[0]). " modificó la incidencia #<a href=\"incidencia.php?ID={$resultadoMod['idincidencia']}#{$resultadoMod['idModificacion']}\">{$resultadoMod['idincidencia']}</a> </li><li>Motivo: ". htmlspecialchars($resultadoMod['motivo']). "</li></ul></small></td></tr>";
+                                                    }
+                                                }
+                                            } else {
+												if ($_SESSION['tipoUsuario'] === 'Usuario'){
+															echo "<td colspan=\"5\">No se ha realizado ninguna modificación en sus incidencias.</td>";
+														} else {
+															echo "<td colspan=\"5\">No se ha realizado ninguna modificación en el sistema.</td>";
+														}
+                                            } 
+                                        ?>
+                                    </tr>
+						</tbody>
+					</table>
+				</div>
+			</div>
+		</div>
+		<?php endif ?>
     </body>

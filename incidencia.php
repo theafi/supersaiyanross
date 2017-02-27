@@ -17,6 +17,7 @@
 	<head>
 		<meta charset="UTF-8">
 		<title>Ver incidencia</title>
+		<link rel="stylesheet" href="css/style.css">
 		<link rel="stylesheet" href="css/bootstrap.css">
         <script src="js/jquery.js"></script>
         <script src="js/bootstrap.js"></script>
@@ -81,6 +82,10 @@
 			.header_datos td{
                 text-align: center;
 			}
+			a{
+				text-decoration: none;
+
+			}
         
 				
 
@@ -106,9 +111,9 @@
                             <td align="center" colspan=""><?php echo $incidencia['fechaModificacion']; ?> </td>
                             <?php
                                 if(isset($_SESSION['id']) && (($_SESSION['tipoUsuario'] === 'Administrador') || ($_SESSION['id'] === $incidencia['subidaPor']))) {
-                                    echo "<td align=\"center\"><a title=\"Editar incidencia\" alt=\"Editar incidencia\" href=\"editarIncidencia.php?ID={$incidencia['idincidencias']}\"><img src=\"y.png\" height=\"15\"></a>".
+                                    echo "<td align=\"center\"><a title=\"Editar incidencia\" alt=\"Editar incidencia\" href=\"editarIncidencia.php?ID={$incidencia['idincidencias']}\"><span class=\"icon-pencil\"></span></a>".
                                     "&nbsp;".
-                                    "<a title=\"Eliminar incidencia\" alt=\"Eliminar incidencia\" onclick=\"return confirm('¿Desea eliminar la incidencia?')\" href=\"borrarIncidencia.php?ID={$incidencia['idincidencias']}\"><img src=\"x.png\" height=\"20\"></a></td>";
+                                    "<a title=\"Eliminar incidencia\" alt=\"Eliminar incidencia\" onclick=\"return confirm('¿Desea eliminar la incidencia?')\" href=\"borrarIncidencia.php?ID={$incidencia['idincidencias']}\"><span class=\"icon-cross\"></span>";
                                 } else{
                                     echo "<td align=\"center\"><a title=\"Reportar incidencia\" alt=\"Reportar incidencia\" href=\"reportarIncidencia.php?ID={$incidencia['idincidencias']}\"><img src=\"flag.png\" height=\"20\"></a></td>";
                                 }

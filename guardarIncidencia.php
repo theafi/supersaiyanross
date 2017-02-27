@@ -11,17 +11,17 @@
 		$nombre = mysqli_real_escape_string($conexion, $_POST['asunto']);
 		$descripcion = mysqli_real_escape_string($conexion, $_POST['descripcion']);
 		$tipoIncidencia = $_POST['tipoIncidencia'];
-		if(isset($_FILES["imagen"]["name"][0])) {  
-			$imagen1 = subirImagen(0);
+		if(isset($_FILES["imagen"]["name"][0]) && ($_FILES["imagen"]["name"][0] !== "")) {  
+			$imagen1 = mysqli_real_escape_string($conexion, subirImagen(0));
 		}
-		if(isset($_FILES["imagen"]["name"][1])) {  
-			$imagen2 = subirImagen(1);
+		if(isset($_FILES["imagen"]["name"][1]) && ($_FILES["imagen"]["name"][1] !== "")) {  
+			$imagen2 = mysqli_real_escape_string($conexion, subirImagen(1));
 		}
-		if(isset($_FILES["imagen"]["name"][2])) {  
-			$imagen3 = subirImagen(2);
+		if(isset($_FILES["imagen"]["name"][2]) && ($_FILES["imagen"]["name"][2] !== "")) {  
+			$imagen3 = mysqli_real_escape_string($conexion, subirImagen(2));
 		}
-		if(isset($_FILES["imagen"]["name"][3])) {  
-			$imagen4 = subirImagen(3);
+		if(isset($_FILES["imagen"]["name"][3]) && ($_FILES["imagen"]["name"][3] !== "")) {  
+			$imagen4 = mysqli_real_escape_string($conexion, subirImagen(3));
 		}
 		
 		$tablaincidencias = "CREATE TABLE IF NOT EXISTS `incidencias` (
@@ -87,6 +87,8 @@
 				}
 			}
 		}
+		// Nombre del servidor
+		$dominio = $_SERVER['SERVER_NAME'];
 		//Destino
 		$para = 'admin@rmi.com';
 		// Asunto
@@ -94,7 +96,7 @@
 		// Mensaje
 		$mensaje = 'Una nueva incidencia ha sido añadida a la base de datos. Por favor, haga click aquí para revisar la incidencia:\r\n
 				\r\n
-				http://localhost/proyecto/incidencia.php?ID=$idIncidencia
+				$dominio/proyecto/incidencia.php?ID=$idIncidencia
 				\r\n';
 		mail($para, $titulo, $mensaje); 
 		mysqli_close($conexion);
