@@ -42,6 +42,12 @@
 								<tr>
 									<th>Usuarios conectados</th><td><?php $sessionCount = count(glob(session_save_path()."/*")); echo $sessionCount; ?></td>
 								</tr>
+                                <tr>
+									<th>Incidencias activas</th><td><?php $consultaCuenta = "SELECT COUNT(*) FROM incidencias WHERE estado = 'Activa'"; $resultadoCuenta = mysqli_query($conexion, $consultaCuenta); while ($resultado = mysqli_fetch_array($resultadoCuenta)) {echo $resultado[0];} ?></td>
+								</tr>
+                                <tr>
+									<th>Incidencias pendientes</th><td><?php $consultaCuenta = "SELECT COUNT(*) FROM incidencias WHERE estado = 'Pendiente'"; $resultadoCuenta = mysqli_query($conexion, $consultaCuenta); while ($resultado = mysqli_fetch_array($resultadoCuenta)) {echo $resultado[0];} ?></td>
+								</tr>
 								<tr>
 									<th>Incidencias resueltas</th><td><?php $consultaCuenta = "SELECT COUNT(*) FROM incidencias WHERE estado = 'Resuelta'"; $resultadoCuenta = mysqli_query($conexion, $consultaCuenta); while ($resultado = mysqli_fetch_array($resultadoCuenta)) {echo $resultado[0];} ?></td>
 								</tr>
@@ -54,7 +60,7 @@
 											$consultaNombre = "SELECT Email FROM usuarios WHERE IDUsuario = $id";
 											$ejecutarNombre = mysqli_query($conexion, $consultaNombre);
 											$resultadoNombre = mysqli_fetch_array($ejecutarNombre);
-											echo $resultadoNombre['Email']. " (".$resultado['count'].")";
+											echo $resultadoNombre['Email']. " (".$resultado['count']." incidencias)";
 										}
 										?>
 										</td>
@@ -71,7 +77,7 @@
 											$ejecutarNombre = mysqli_query($conexion, $consultaNombre);
 											$resultadoNombre = mysqli_fetch_array($ejecutarNombre);
 											if (mysqli_num_rows($ejecutarNombre) !== 0) {
-												echo $resultadoNombre['Email']. " (".$resultado['count'].")";
+												echo $resultadoNombre['Email']. " (".$resultado['count']." incidencias)";
 											} else {echo "Nadie.";}
 										}
 									?>

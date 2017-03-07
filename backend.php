@@ -86,10 +86,18 @@
                                     <div class="container">
                                         <div class="panel panel-default">
                                             <div class="panel-body">
-                                                Hacer copia de seguridad en el servidor <button formaction="backup.php" formmethod="post" name="backupservidor" type="submit" class="btn btn-default">Copia</button><br> 
-                                                <br>
-                                                Hacer copia de seguridad en el equipo <button type="button" class="btn btn-default">Copia</button>
+                                            <form action="backup.php" method="post">
+                                                Hacer copia de seguridad en el servidor <button formaction="backup.php" formmethod="post" name="backupservidor" type="submit" class="btn btn-default">Copia</button>
+                                            </form>
                                             </div>
+                                            <?php if(isset($_SESSION['error'])) {
+                                                    echo $_SESSION['error'];
+                                                    $_SESSION['error'] = "";
+                                                } elseif (isset($_SESSION['success'])) {
+                                                    echo $_SESSION['success'];
+                                                    $_SESSION['success'] = "";
+                                                } else {}
+                                            ?>
                                         </div>
                                     </div>
                                 </div>

@@ -35,7 +35,7 @@
 			$borrarimagenes = "DELETE FROM incidencias_imagenes WHERE idincidencias_imagenes = '$id'";
 			mysqli_query($conexion, $borrarimagenes);
 			$_SESSION['error'] = "La incidencia se ha eliminado correctamente.";
-			header('Refresh: 0; URL=listarIncidencias.php');
+			header('Refresh: 0; URL=listar_incidencias.php');
             }
 		?>
 	</body>
