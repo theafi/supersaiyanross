@@ -47,7 +47,7 @@
 								</tr>
 								<tr>
 									<th>Usuario con más incidencias subidas</th><td><?php 
-										$consultaCuenta = "SELECT subidaPor, COUNT(*) as count FROM incidencias GROUP BY subidaPor ORDER BY count DESC";
+										$consultaCuenta = "SELECT subidaPor, COUNT(*) as count FROM incidencias GROUP BY subidaPor ORDER BY count DESC LIMIT 1";
 										$ejecutarCuenta = mysqli_query($conexion, $consultaCuenta);
 										while ($resultado = mysqli_fetch_array($ejecutarCuenta)) {
 											$id = $resultado['subidaPor'];
@@ -63,7 +63,7 @@
 									<th>Administrador con más incidencias asignadas</th>
 									<td>
 									<?php 
-										$consultaCuenta = "SELECT asignadaA, COUNT(*) as count FROM incidencias WHERE asignadaA IS NOT NULL GROUP BY asignadaA ORDER BY count DESC";
+										$consultaCuenta = "SELECT asignadaA, COUNT(*) as count FROM incidencias WHERE asignadaA IS NOT NULL GROUP BY asignadaA ORDER BY count DESC LIMIT 1";
 										$ejecutarCuenta = mysqli_query($conexion, $consultaCuenta);
 										while ($resultado = mysqli_fetch_array($ejecutarCuenta)) {
 											$id = $resultado['asignadaA'];

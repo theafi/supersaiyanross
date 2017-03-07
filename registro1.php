@@ -56,8 +56,7 @@
 			$idresultado = print_r($filas[0], true);
 			$tiporesultado = print_r($filas[1], true);
 			$fecha = date("Y-m-d H:i:s");
-			if (!isset($_SESSION['tipoUsuario'])) {
-                if ($_SESSION['tipoUsuario'] != 'Administrador') {
+			if (!isset($_SESSION['tipoUsuario'] && ($_SESSION['tipoUsuario'] != 'Administrador')) {
                     $_SESSION['id'] = $idresultado;
                     $_SESSION['nombre'] = $nombre;
                     $_SESSION['apellidos'] = $apellidos;
@@ -68,7 +67,7 @@
                     $actualizarusuario = "UPDATE usuarios SET nEntradas = nEntradas + 1, ultimaVisita = '$fecha' WHERE IDUsuario = '$idresultado';";
                     mysqli_query($conexion, $actualizarusuario);
                     echo "<p>Usuario registrado con éxito. En breve se le redirigirá a la página principal.<p>";
-                }
+                
             }
 
 			mysqli_close($conexion);
@@ -76,7 +75,7 @@
 				//header('Refresh: 0; URL=listarUsuarios.php');
 				//echo $insertarusuario;
 			} else {
-				//header('Refresh: 0; URL=index.php');
+				header('Refresh: 0; URL=index.php');
 				//echo $insertarusuario;
 			}
 		};
