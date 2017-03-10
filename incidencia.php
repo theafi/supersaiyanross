@@ -110,13 +110,22 @@
                             <td align="center"><?php echo $incidencia['fechaExpedicion']; ?></td>
                             <td align="center" colspan=""><?php echo $incidencia['fechaModificacion']; ?> </td>
                             <?php
-                                if(isset($_SESSION['id']) && (($_SESSION['tipoUsuario'] === 'Administrador') || ($_SESSION['id'] === $incidencia['subidaPor']))) {
+                                if($_SESSION['tipoUsuario'] === 'Administrador') {
                                     echo "<td align=\"center\"><a title=\"Editar incidencia\" alt=\"Editar incidencia\" href=\"editarIncidencia.php?ID={$incidencia['idincidencias']}\"><span class=\"icon-pencil\"></span></a>".
                                     "&nbsp;".
                                     "<a title=\"Eliminar incidencia\" alt=\"Eliminar incidencia\" onclick=\"return confirm('¿Desea eliminar la incidencia?')\" href=\"borrarIncidencia.php?ID={$incidencia['idincidencias']}\"><span class=\"icon-cross\"></span>";
+                                } elseif($_SESSION['id'] === $incidencia['subidaPor']) {
+                                    if (!isset($incidencia['asignadaA']) && ($incidencia['estado'] === 'Pendiente') && ($incidencia['prioridad'] === 'No definida')) {
+                                        echo "<td align=\"center\"><a title=\"Editar incidencia\" alt=\"Editar incidencia\" href=\"editarIncidencia.php?ID={$incidencia['idincidencias']}\"><span class=\"icon-pencil\"></span></a>".
+                                        "&nbsp;".
+                                        "<a title=\"Eliminar incidencia\" alt=\"Eliminar incidencia\" onclick=\"return confirm('¿Desea eliminar la incidencia?')\" href=\"borrarIncidencia.php?ID={$incidencia['idincidencias']}\"><span class=\"icon-cross\"></span>";
+                                    } else{
+                                         echo "<td align=\"center\"></td>";
+                                 }
                                 } else{
                                     echo "<td align=\"center\"><a title=\"Reportar incidencia\" alt=\"Reportar incidencia\" href=\"reportarIncidencia.php?ID={$incidencia['idincidencias']}\"><img src=\"flag.png\" height=\"20\"></a></td>";
                                 }
+                            
                             
                             ?>
                         </tr>

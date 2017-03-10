@@ -78,7 +78,7 @@
 		</style>
 	</head>
 	<body>
-	<? php include 'navegacion.php'; ?>
+	<?php include 'navegacion.php'; ?>
 		<div class="incidencia">
 			<form action="guardarIncidencia.php" method="post" enctype="multipart/form-data">
 				<div class="form-group">

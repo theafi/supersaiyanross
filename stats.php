@@ -39,9 +39,6 @@
 								<tr>
 									<th>Usuarios totales</th><td><?php $consultaCuenta = "SELECT COUNT(*) FROM usuarios"; $resultadoCuenta = mysqli_query($conexion, $consultaCuenta); while ($resultado = mysqli_fetch_array($resultadoCuenta)) {echo $resultado[0];} ?></td>
 								</tr>
-								<tr>
-									<th>Usuarios conectados</th><td><?php $sessionCount = count(glob(session_save_path()."/*")); echo $sessionCount; ?></td>
-								</tr>
                                 <tr>
 									<th>Incidencias activas</th><td><?php $consultaCuenta = "SELECT COUNT(*) FROM incidencias WHERE estado = 'Activa'"; $resultadoCuenta = mysqli_query($conexion, $consultaCuenta); while ($resultado = mysqli_fetch_array($resultadoCuenta)) {echo $resultado[0];} ?></td>
 								</tr>

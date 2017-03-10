@@ -56,7 +56,7 @@
 			$idresultado = print_r($filas[0], true);
 			$tiporesultado = print_r($filas[1], true);
 			$fecha = date("Y-m-d H:i:s");
-			if (!isset($_SESSION['tipoUsuario'] && ($_SESSION['tipoUsuario'] != 'Administrador')) {
+			if (null !== $_SESSION['tipoUsuario'] && ($_SESSION['tipoUsuario'] != 'Administrador')) {
                     $_SESSION['id'] = $idresultado;
                     $_SESSION['nombre'] = $nombre;
                     $_SESSION['apellidos'] = $apellidos;

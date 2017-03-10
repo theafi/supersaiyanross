@@ -30,7 +30,8 @@
             <!-- Collect the nav links, forms, and other content for toggling -->
                 <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
                     <ul class="nav navbar-nav">
-                        <li><a href="listar_incidencias.php">Incidencias</a></li>
+                        <li><a href="listar_incidencias.php">Incidencias</a> </li>
+                        <li><a href="nuevaIncidencia.php"><span class="glyphicon glyphicon-plus"></span></a> </li>
                     </ul>
                     <ul class="nav navbar-nav navbar-right">
                     <form class="navbar-form navbar-left" action="listar_incidencias.php?buscar=" method="get">
