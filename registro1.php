@@ -6,25 +6,7 @@
 		//Parámetros de conexión a la BD
 		include 'funcion.php';
 		$conexion = conectarBD();
-		$creartabla = "CREATE TABLE IF NOT EXISTS `usuarios` (
-							  `IDUsuario` int(11) NOT NULL AUTO_INCREMENT,
-							  `Nombre` char(30) NOT NULL,
-							  `Apellidos` char(80) DEFAULT NULL,
-							  `Email` char(80) NOT NULL,
-							  `Ciudad` char(50) NOT NULL,
-							  `Pais` int(11) NOT NULL,
-							  `Clave` char(100) NOT NULL,
-							  `tipoUsuario` enum('Usuario','Administrador') NOT NULL DEFAULT 'Usuario',
-							  `fechaAlta` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
-							  `nEntradas` int(11) NOT NULL DEFAULT '0',
-							  `nErrores` int(11) NOT NULL DEFAULT '0',
-							  `ultimaVisita` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
-							  `bloqueado` tinyint(1) NOT NULL DEFAULT '0',
-							  PRIMARY KEY (`IDUsuario`),
-							  KEY `pais_id` (`Pais`),
-							  CONSTRAINT `usuarios_ibfk_1` FOREIGN KEY (`Pais`) REFERENCES `pais` (`ID`) ON DELETE NO ACTION ON UPDATE CASCADE
-						) ENGINE=InnoDB AUTO_INCREMENT=0 DEFAULT CHARSET=utf8;" or die(mysqli_error());
-		mysqli_query($conexion, $creartabla);
+		
 		$nombre = mysqli_real_escape_string($conexion, $_POST['nombre']);
 		$apellidos = mysqli_real_escape_string($conexion, $_POST['apellidos']);
 		$email = mysqli_real_escape_string($conexion, $_POST['email']);
@@ -39,15 +21,15 @@
 			header('Location: registro.php');
 		}
 		else {
-			$compadmin = "SELECT * FROM rmi.usuarios WHERE tipoUsuario = 'administrador';";
+			/* $compadmin = "SELECT * FROM rmi.usuarios WHERE tipoUsuario = 'Administrador';";
 			$compadminsql = mysqli_query($conexion, $compadmin);
 			if (mysqli_num_rows($compadminsql) == 0) {
 				$claveadmin = password_hash('admin', PASSWORD_BCRYPT); // En la documentación de PHP me recomiendan que no le ponga una salt porque la función me generará una aleatoria cada vez que haga un hash
-				$insertaradmin = "INSERT INTO usuarios(Nombre, Email, Ciudad, Pais, Clave, tipoUsuario) VALUES ('admin', 'admin@rmi.com', '$ciudad', $pais, '$claveadmin', 'administrador');";
+				$insertaradmin = "INSERT INTO usuarios(Nombre, Email, Ciudad, Pais, Clave, tipoUsuario) VALUES ('admin', 'admin@rmi.com', 'Madrid', 'ES', '$claveadmin', 'Administrador');";
 				mysqli_query($conexion, $insertaradmin);
-			}
+			} */
 			$clavecifrada = password_hash($clave, PASSWORD_BCRYPT); 
-			$insertarusuario = "INSERT INTO usuarios(Nombre, Apellidos, Email, Ciudad, Pais, Clave) VALUES ('$nombre', '$apellidos', '$email', '$ciudad', $pais, '$clavecifrada');";
+			$insertarusuario = "INSERT INTO usuarios(Nombre, Apellidos, Email, Ciudad, Pais, Clave) VALUES ('$nombre', '$apellidos', '$email', '$ciudad', '$pais', '$clavecifrada');";
 			mysqli_query($conexion, $insertarusuario);
 
 			$iddelusuario = "SELECT IDUsuario, tipoUsuario FROM rmi.usuarios WHERE Email = '$email';";

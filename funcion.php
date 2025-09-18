@@ -2,9 +2,9 @@
 
 function conectarBD() {
 
-	$dbhost = "localhost"; //Los nombres de las variables son case-sensitive, no así las palabras reservadas
-	$dbusuario = "proyecto";
-	$dbpassword = "71JYNcXnIOejQZvk";
+	$dbhost = "db";
+	$dbusuario = "root";
+	$dbpassword = getenv("MYSQL_ROOT_PASSWORD");
 	$port = "3306";
 	$conexion = mysqli_connect($dbhost . ":" . $port, $dbusuario, $dbpassword);
 	if (!$conexion) die('Could not connect: ' . mysql_error($conexion));
