@@ -2,7 +2,7 @@
 <?php
 	session_start();
     if((!isset($_SESSION['id'])) && (empty($_SESSION['id']))) { 
-			header('Location: login.php');
+			header('Location: setup.php');
 	} 
 	include 'funcion.php';
 	if (!isset($conexion)) {

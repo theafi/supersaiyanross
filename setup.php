@@ -1,13 +1,14 @@
 <?php
 
     session_start();
-	if (isset($_SESSION['tipoUsuario'])) {
-			header('Location:index.php');
-    }
-
+        if((isset($_SESSION['id'])) && (!empty($_SESSION['id']))) { 
+			header('Location: index.php');
+	} 
+    $errors = [];
     include 'funcion.php';
-    $errors = []
-	$conexion = conectarBD();
+		if (!isset($conexion)) {
+        $conexion = conectarBD();
+    }
     $tablaUsuarios = "CREATE TABLE IF NOT EXISTS `usuarios` (
                                 `IDUsuario` int(11) NOT NULL AUTO_INCREMENT,
                                 `Nombre` char(30) NOT NULL,
@@ -61,13 +62,21 @@
                                     CONSTRAINT `fk_modificadaPor` FOREIGN KEY (`modificadaPor`) REFERENCES `usuarios` (`IDUsuario`) ON DELETE CASCADE ON UPDATE CASCADE
                                     ) ENGINE=InnoDB DEFAULT CHARSET=utf8;" or die(mysqli_error());
 
-    $tablas = [$tablaUsuarios, $tablaIncidencias, $tablaIncidencias, $tablaModificaciones]
-    foreach($tablas as $k => $sql){
-        $query = @$mysqli_query($conexion, $sql);
-        if(!$query)
-        $errors[] = "Table $k : Creation failed ($conn->error)";
-        else
-        $errors[] = "Table $k : Creation done";
+    $tablas = [$tablaUsuarios, $tablaIncidencias, $tablaImagenes, $tablaModificaciones];
+    foreach($tablas as $k) {
+        try {
+        mysqli_query($conexion, $k);
+        echo json_encode(array(
+            "status" => "Ok",
+            "message" => "Success",
+        ));
+        }
+        catch (mysqli_sql_exception $e) {
+        echo json_encode(array(
+            "status" => "Error",
+            "message" => $e->getMessage()
+        ));
+        }
     }
 
     #Ya que estoy voy a crear al admin aqui en vez de en la pantalla de registro
@@ -78,6 +87,5 @@
 		$insertaradmin = "INSERT INTO usuarios(Nombre, Email, Ciudad, Pais, Clave, tipoUsuario) VALUES ('admin', 'admin@rmi.com', 'Madrid', 'ES', '$claveadmin', 'Administrador');";
 		mysqli_query($conexion, $insertaradmin);
 	}
-
     header('Location: login.php');
 ?>
