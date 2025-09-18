@@ -2,9 +2,9 @@
 
 function conectarBD() {
 
-	$dbhost = "mysql";
+	$dbhost = "db";
 	$dbusuario = "root";
-	$dbpassword = "TestTest99";
+	$dbpassword = getenv("MYSQL_ROOT_PASSWORD");
 	$port = "3306";
 	$conexion = mysqli_connect($dbhost . ":" . $port, $dbusuario, $dbpassword);
 	if (!$conexion) die('Could not connect: ' . mysql_error($conexion));

@@ -1,0 +1,25 @@
+services:
+  web:
+    build: .
+    ports:
+      - "80:80"
+    depends_on:
+      - db
+    healthcheck:
+      test:  "mysql $$MYSQL_DATABASE -u root -p $$MYSQL_ROOT_PASSWORD"
+    env_file:
+     - ./default.env
+    networks:
+      - frontend
+      - backend
+  db:
+    image: "mysql:latest"
+    env_file:
+     - ./default.env
+    networks:
+      - backend
+networks:
+  frontend:
+    driver: bridge
+  backend:
+    driver: bridge
